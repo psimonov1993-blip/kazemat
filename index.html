@@ -60,11 +60,17 @@ h2 { font-size: clamp(30px, 4.4vw, 44px); margin-bottom: 10px; }
 /* герой */
 .hero { position: relative; min-height: min(86vh, 760px); display: grid; align-items: end; overflow: hidden; border-bottom: 1px solid var(--rule); }
 .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
-.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--ground) 4%, rgba(15,12,10,0.82) 38%, rgba(15,12,10,0.2) 75%); }
-.hero .wrap { position: relative; z-index: 1; padding-block: 120px 56px; display: grid; gap: 20px; width: 100%; }
-.hero h1 { font-size: clamp(40px, 8.5vw, 104px); letter-spacing: 0.02em; }
-.hero .lead { max-width: 58ch; font-size: clamp(17px, 2vw, 20px); margin: 0; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--ground) 5%, rgba(15,12,10,0.88) 42%, rgba(15,12,10,0.55) 68%, rgba(15,12,10,0.15) 100%); }
+.hero h1, .hero .tagline, .hero .lead, .hero .kicker { text-shadow: 0 2px 14px rgba(0,0,0,0.85); }
+.hero .kicker { letter-spacing: 0.08em; }
+.hero .wrap { position: relative; z-index: 1; padding-block: 120px 56px; display: grid; gap: 18px; width: 100%; }
+.hero h1 { font-size: clamp(56px, 11vw, 128px); letter-spacing: 0.04em; line-height: 0.95; }
+.hero .tagline { margin: -6px 0 0; font-family: var(--display); font-weight: 700; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; color: #f2c48c; max-width: 26ch; }
+.hero .lead { max-width: 56ch; font-size: clamp(17px, 2vw, 20px); margin: 0; }
 .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero .more { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; }
+.textlink { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--mono); font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: underline; text-decoration-color: var(--ember); text-underline-offset: 5px; }
+.textlink:hover { color: var(--ember); }
 .btn.tg { border-color: var(--text-dim); }
 .btn.tg:hover, .btn.tg:focus-visible { border-color: var(--ember); }
 .seats { display: grid; gap: 8px; font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
@@ -255,6 +261,7 @@ body.typing .bar { transform: translateY(110%); }
   section { padding-block: 52px 8px; }
   .hero .wrap { padding-block: 96px 40px; }
   .hero .actions .btn { flex: 1 1 100%; }
+  .hero .wrap { padding-top: 80px; }
   .order { padding: 24px 18px; }
   .order .row { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .order .bottom .btn { flex: 1 1 100%; }
@@ -262,6 +269,9 @@ body.typing .bar { transform: translateY(110%); }
   .share { padding: 20px 18px; }
   .share .act, .share .act .btn { width: 100%; }
   .faq .a { padding-right: 0; }
+}
+@media (max-width: 360px) {
+  .btn { letter-spacing: 0.03em; padding-inline: 12px; gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -276,16 +286,19 @@ body.typing .bar { transform: translateY(110%); }
 <header class="hero">
   <img src="img/07_vyhod.jpg" alt="Конец потерны: в проёме выхода холодный дневной свет, на его фоне силуэт отравленного в противогазе" width="1280" height="680" fetchpriority="high">
   <div class="wrap">
-    <p class="kicker" id="season-line">Сезон I · с 1 ноября 2026</p>
-    <h1>Мастерская Каземата</h1>
-    <p class="lead">КАЗЕМАТ - хоррор про русский форт в 1915 году: газ, лампа, наган и твари в противогазах. Игру мы делаем вместе. Получи звание, отдай до трёх приказов, и твои изменения войдут в следующую версию игры, а позывной навсегда останется в её летописи</p>
+    <p class="kicker" id="hero-kicker">Хоррор для Android · v1.0.1</p>
+    <h1>Каземат</h1>
+    <p class="tagline">Игра, которую меняют сами игроки</p>
+    <p class="lead">Форт 1915 года: газ, лампа, наган и твари в противогазах. Получи звание, отдай приказ, и твоя идея войдёт в следующую версию игры, а позывной останется в её летописи</p>
     <div class="actions" id="hero-actions">
-      <a class="btn solid" href="#prikaz">Составить приказ</a>
-      <a class="btn" href="#igra">Скачать игру</a>
-      <a class="btn tg" id="hero-tg" href="#shtab" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.8c-.8.3-.8 1.4 0 1.7l4.6 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.5 4.8 3.5c.6.4 1.4.1 1.6-.6L22.9 5c.2-1-.6-1.8-1.4-1.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9.2 14.1 8.6-6.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Штаб в Telegram</a>
+      <a class="btn solid" href="#igra"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12 M7 10l5 5 5-5 M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>Скачать игру</a>
+      <a class="btn tg" id="hero-tg" href="#shtab" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.8c-.8.3-.8 1.4 0 1.7l4.6 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.5 4.8 3.5c.6.4 1.4.1 1.6-.6L22.9 5c.2-1-.6-1.8-1.4-1.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9.2 14.1 8.6-6.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Подписаться на канал</a>
+    </div>
+    <div class="more">
+      <a class="textlink" href="#prikaz">Составить приказ</a>
     </div>
     <div class="seats" aria-live="polite">
-      <span id="seats-text">Свободно <b>12</b> мест из <b>12</b></span>
+      <span id="seats-text">Сезон I: свободно <b>12</b> мест из <b>12</b></span>
       <div class="seat-row" id="seat-row" aria-hidden="true"></div>
     </div>
   </div>
@@ -519,9 +532,9 @@ body.typing .bar { transform: translateY(110%); }
 </footer>
 
 <nav class="bar" id="bar" aria-label="Быстрые действия">
-  <a class="main" href="#prikaz"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M15 3v4h4 M9 12h7 M9 16h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>Приказ</a>
+  <a class="main" href="#igra"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12 M7 10l5 5 5-5 M5 20h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>Скачать</a>
   <a id="bar-tg" href="#shtab" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.8c-.8.3-.8 1.4 0 1.7l4.6 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.5 4.8 3.5c.6.4 1.4.1 1.6-.6L22.9 5c.2-1-.6-1.8-1.4-1.5Z M9.2 14.1l8.6-6.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>Канал</a>
-  <a href="#igra"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12 M7 10l5 5 5-5 M5 20h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>Скачать</a>
+  <a href="#prikaz"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M15 3v4h4 M9 12h7 M9 16h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>Приказ</a>
 </nav>
 
 <script type="application/json" id="fallback">
@@ -546,10 +559,11 @@ body.typing .bar { transform: translateY(110%); }
   function catalog() { return data.catalog || []; }
   function seatInfo() { var total = +((data.season || {}).seats) || 12, taken = (data.garrison || []).length; return {total: total, taken: taken, free: Math.max(total - taken, 0)}; }
 
-  function seatsLine(box) {
+  function seatsLine(box, prefix) {
     var s = seatInfo(); box.textContent = "";
-    if (!s.free) { box.appendChild(document.createTextNode("Все " + s.total + " " + seatsWord(s.total) + " в гарнизоне заняты")); return; }
-    box.appendChild(document.createTextNode("Свободно "));
+    var head = prefix ? prefix + ": " : "";
+    if (!s.free) { box.appendChild(document.createTextNode(head + (prefix ? "все " : "Все ") + s.total + " " + seatsWord(s.total) + " в гарнизоне заняты")); return; }
+    box.appendChild(document.createTextNode(head + (prefix ? "свободно " : "Свободно ")));
     box.appendChild(el("b", null, String(s.free)));
     box.appendChild(document.createTextNode(" " + seatsWord(s.free) + " из "));
     box.appendChild(el("b", null, String(s.total)));
@@ -557,11 +571,11 @@ body.typing .bar { transform: translateY(110%); }
 
   function renderSeats() {
     var s = seatInfo();
-    seatsLine($("seats-text"));
+    seatsLine($("seats-text"), data.season.name);
     var row = $("seat-row"); row.textContent = "";
     for (var i = 0; i < s.total; i++) row.appendChild(el("span", "seat" + (i < s.taken ? " taken" : "")));
     var rs = $("ranks-seats"); seatsLine(rs); rs.appendChild(document.createTextNode(" · " + data.season.name));
-    $("season-line").textContent = data.season.name + " · с " + ruDate(data.season.started);
+    $("hero-kicker").textContent = "Хоррор для Android · v" + ((data.game || {}).version || "1.0");
     $("o-season").textContent = data.season.name;
   }
 
