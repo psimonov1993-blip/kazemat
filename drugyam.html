@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Расскажи друзьям</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Serif:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Пост для групп Telegram от лица сына автора: текст копируется, картинка скачивается. Палитра сайта мастерской */
+:root {
+  --ground: #0f0c0a;
+  --ground-2: #17120e;
+  --rule: #2f261d;
+  --text: #e2d7bd;
+  --text-dim: #a3977e;
+  --paper: #e5d9ba;
+  --ink: #2a2118;
+  --ink-dim: #6a5b46;
+  --ember: #d48b3a;
+  --stamp: #a3261b;
+  --gas: #a6dc5a;
+  --display: "Old Standard TT", "PT Serif", Georgia, serif;
+  --body: "PT Serif", Georgia, serif;
+  --mono: "PT Mono", "Courier New", monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: var(--ember); }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left, 0px)) 64px; }
+header { padding: 36px 0 18px; border-bottom: 1px solid var(--rule); }
+.kicker { font-family: var(--mono); font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ember); margin: 0 0 10px; }
+h1, h2 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(32px, 7vw, 48px); }
+h2 { font-size: clamp(24px, 4.5vw, 30px); margin-bottom: 8px; }
+.lead { color: var(--text-dim); margin: 12px 0 0; }
+section { padding: 36px 0 0; }
+.note { color: var(--text-dim); font-size: 15.5px; margin: 0 0 14px; }
+.pics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pics figure { margin: 0; }
+.pics img { width: 100%; border: 1px solid var(--rule); }
+.pics figcaption { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+.pics figcaption a { text-decoration: none; border: 1px solid var(--ember); padding: 4px 9px; color: var(--text); white-space: nowrap; }
+.paper { background: var(--paper); color: var(--ink); padding: 20px 20px 16px; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
+.paper pre { font-family: var(--body); font-size: 16.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; margin: 0 0 14px; }
+.paper .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); letter-spacing: .06em; text-transform: uppercase; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.paper .ok { color: #3d6b1c; }
+.btn { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding: 11px 16px; border: 1px solid var(--ink); color: var(--ink); background: transparent; cursor: pointer; }
+.btn:hover, .btn:focus-visible { background: var(--ink); color: var(--paper); outline: none; }
+.copied { background: var(--stamp) !important; border-color: var(--stamp) !important; color: var(--paper) !important; }
+ol { padding-left: 22px; margin: 0; }
+ol li { margin-bottom: 10px; }
+ol li::marker { color: var(--ember); font-family: var(--mono); }
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+@media (max-width: 520px) { .pics { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">КАЗЕМАТ · для своих групп</p>
+    <h1>Расскажи друзьям про игру</h1>
+    <p class="lead">Готовый пост для групп в Telegram. Скопируй текст, скачай картинку и отправь. Ссылки внутри уже рабочие</p>
+  </header>
+
+  <section>
+    <h2>1. Картинка</h2>
+    <p class="note">Возьми любую одну. Постер ярче и заметнее в ленте, а кадр показывает, как игра выглядит на самом деле</p>
+    <div class="pics">
+      <figure><img src="img/kanal/post1-poster.jpg" alt="Постер КАЗЕМАТ"><figcaption><span>постер</span><a href="img/kanal/post1-poster.jpg" download="kazemat-poster.jpg">скачать</a></figcaption></figure>
+      <figure><img src="img/kanal/kadr-otravlennyy.jpg" alt="Кадр из игры: отравленный в казарме"><figcaption><span>кадр из игры</span><a href="img/kanal/kadr-otravlennyy.jpg" download="kazemat-kadr.jpg">скачать</a></figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Пост в группу</h2>
+    <p class="note">Прикрепи картинку, а этот текст вставь в подпись</p>
+    <div class="paper">
+      <p class="meta"><span>Основной пост</span><span class="count"></span></p>
+      <pre id="t-main">Ребят, мой папа сделал хоррор для телефона 😱 Называется КАЗЕМАТ
+
+1915 год, подземелья крепости после газовой атаки. В темноте бродят отравленные в противогазах, а у тебя только наган на 7 патронов и керосиновая лампа. Погасишь лампу - тебя почти не видно. Выстрелишь - услышат все. Надо найти ключ коменданта и выбраться к свету
+
+Самое крутое: игру можно менять. Берёшь звание в гарнизоне и отдаёшь приказ: свой монстр, комната, оружие или пасхалка. Принятый приказ появляется в следующей версии, а твой ник навсегда остаётся в летописи игры. Звание от 150 ₽, платят родители. Мест в первом сезоне всего 12
+
+Скачать бесплатно, только Android:
+psimonov1993-blip.github.io/kazemat
+
+Канал игры, там кадры, викторины и новости:
+t.me/masterskayagames
+
+Играть в наушниках и с выключенным светом 🎧</pre>
+      <button class="btn" data-copy="t-main">Скопировать</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Коротко</h2>
+    <p class="note">Для групп, где длинные посты не любят</p>
+    <div class="paper">
+      <p class="meta"><span>Короткий пост</span><span class="count"></span></p>
+      <pre id="t-short">Мой папа сделал хоррор для телефона: КАЗЕМАТ 😱 Подземелья 1915 года, лампа, наган и твари в противогазах. Скачать бесплатно на Android и предложить в игру своего монстра 👇
+psimonov1993-blip.github.io/kazemat
+Канал: t.me/masterskayagames</pre>
+      <button class="btn" data-copy="t-short">Скопировать</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. Лично другу</h2>
+    <p class="note">Для тех, кому точно зайдёт. Лично работает лучше, чем в общей группе</p>
+    <div class="paper">
+      <p class="meta"><span>Сообщение другу</span><span class="count"></span></p>
+      <pre id="t-friend">Зацени, папа сделал хоррор, КАЗЕМАТ. Только в наушниках и без света 😄 Пройдёшь, напиши, где было страшнее всего
+psimonov1993-blip.github.io/kazemat</pre>
+      <button class="btn" data-copy="t-friend">Скопировать</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Как не получить бан в группе</h2>
+    <ol>
+      <li>В одну группу один раз. Повторы считают спамом и выгоняют</li>
+      <li>Где реклама запрещена или чат не про игры, сначала спроси разрешения у админа</li>
+      <li>Отвечай на вопросы под постом сам: живой ответ работает лучше любой рекламы</li>
+      <li>Если кто-то хочет звание, договариваются его родители с твоим папой. Деньги и реквизиты в группах не обсуждай</li>
+    </ol>
+  </section>
+
+  <footer>КАЗЕМАТ · <a href="./">сайт мастерской</a> · <a href="https://t.me/masterskayagames">канал</a></footer>
+</div>
+<script>
+(function () {
+  document.querySelectorAll(".count").forEach(function (c) {
+    var n = Array.from(c.closest(".paper").querySelector("pre").textContent).length;
+    c.textContent = n + " из 1024 знаков";
+    if (n <= 1024) c.className = "count ok";
+  });
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var text = document.getElementById(b.getAttribute("data-copy")).textContent;
+      function done() { var old = b.textContent; b.textContent = "Скопировано"; b.classList.add("copied"); setTimeout(function () { b.textContent = old; b.classList.remove("copied"); }, 1400); }
+      function fallback() {
+        var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
