@@ -3,13 +3,14 @@ name: Стартовые посты канала
 # 5 стартовых постов с картинками и опросами (.github/scripts/kanal_start.json), запуск только вручную
 # check - проверка бота, канала, прав, картинок и длины текстов без публикации
 # publish - публикация; что уже ушло, записано в kanal-start.json, повтор не задвоит
+# edit - правка подписей уже опубликованных постов по caption_html (ссылки в словах)
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check - проверить без публикации; publish - опубликовать 5 постов"
+        description: "check - проверить без публикации; publish - опубликовать 5 постов; edit - обновить подписи опубликованных постов"
         type: choice
-        options: [check, publish]
+        options: [check, publish, edit]
         default: check
 
 permissions:

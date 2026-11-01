@@ -5,6 +5,7 @@
 Режимы:
   check     ничего не публикует: проверяет бота, канал, права, картинки и длину текстов
   publish   публикует посты по порядку, после каждого его опрос, потом закрепляет пост 1
+  edit      переписывает подписи уже опубликованных постов (ссылки в словах из caption_html), кнопки сохраняет
 
 Тексты и картинки - kanal_start.json рядом со скриптом (собирается из kanal.html)
 Что уже отправлено, записано в kanal-start.json в корне сайта: повторный запуск продолжит с места обрыва, а не задвоит
@@ -14,6 +15,7 @@ import argparse
 import datetime
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
@@ -114,9 +116,21 @@ def record_news(root, channel, sent):
 
 
 def caption_for(post, has_comments):
-    if not has_comments and post.get("caption_no_comments"):
-        return post["caption_no_comments"]
-    return post["caption"]
+    """Подпись и режим разметки: HTML со ссылками, если он есть, иначе простой текст"""
+    field = "caption_no_comments" if not has_comments and post.get("caption_no_comments") else "caption"
+    if post.get(field + "_html"):
+        return post[field + "_html"], "HTML"
+    return post[field], None
+
+
+def visible(text, mode):
+    if mode != "HTML":
+        return text
+    return re.sub(r"<[^>]+>", "", text).replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
+
+
+def buttons_markup(post):
+    return {"inline_keyboard": [[{"text": t, "url": u}] for t, u in post["buttons"]]}
 
 
 def poll_payload(chat, poll):
@@ -160,10 +174,12 @@ def check(tg, data):
         problems += 1
     has_comments = bool(chat.get("linked_chat_id"))
     for n, post in enumerate(data["posts"], 1):
-        cap = caption_for(post, has_comments)
+        cap, mode = caption_for(post, has_comments)
+        shown = visible(cap, mode)
         log("\n--- Пост %d · %s" % (n, post["title"]))
-        log("подпись %d из 1024 (UTF-16), фото %d, кнопок %d" % (tg_len(cap), len(post["images"]), len(post.get("buttons") or [])))
-        if tg_len(cap) > 1024:
+        log("подпись %d из 1024 (UTF-16), ссылок в тексте %d, фото %d, кнопок %d" % (
+            tg_len(shown), cap.count("<a href=") if mode else 0, len(post["images"]), len(post.get("buttons") or [])))
+        if tg_len(shown) > 1024:
             log("ОШИБКА: подпись длиннее 1024")
             problems += 1
         for img in post["images"]:
@@ -183,21 +199,26 @@ def check(tg, data):
 
 
 def send_post(tg, post, caption, loud):
+    text, mode = caption
     base = {"chat_id": tg.chat_id}
     if not loud:
         base["disable_notification"] = True
     imgs = post["images"]
     if len(imgs) == 1:
-        p = dict(base, photo=imgs[0]["url"], caption=caption, has_spoiler=bool(imgs[0].get("spoiler")))
+        p = dict(base, photo=imgs[0]["url"], caption=text, has_spoiler=bool(imgs[0].get("spoiler")))
+        if mode:
+            p["parse_mode"] = mode
         if post.get("buttons"):
-            p["reply_markup"] = {"inline_keyboard": [[{"text": t, "url": u}] for t, u in post["buttons"]]}
+            p["reply_markup"] = buttons_markup(post)
         res = tg.call("sendPhoto", p)
         return [res["message_id"]], res
     media = []
     for i, img in enumerate(imgs):
         m = {"type": "photo", "media": img["url"], "has_spoiler": bool(img.get("spoiler"))}
         if i == 0:
-            m["caption"] = caption
+            m["caption"] = text
+            if mode:
+                m["parse_mode"] = mode
         media.append(m)
     res = tg.call("sendMediaGroup", dict(base, media=media))
     return [r["message_id"] for r in res], res[0]
@@ -268,6 +289,42 @@ def publish(tg, data, root):
     return 1 if failed else 0
 
 
+def edit(tg, data, root):
+    """Переписывает подписи уже опубликованных постов (ссылки в словах), кнопки ставит заново: без них Telegram их снимет"""
+    state = load_state(root / "kanal-start.json")
+    _, chat, member = channel_info(tg)
+    if not member.get("can_edit_messages"):
+        log("У бота нет права редактировать сообщения канала, остановка")
+        return 1
+    has_comments = bool(chat.get("linked_chat_id"))
+    failed = 0
+    for n, post in enumerate(data["posts"], 1):
+        rec = state["posts"].get(post["id"]) or {}
+        text, mode = caption_for(post, has_comments)
+        if not rec.get("message_ids"):
+            log("Пост %d ещё не опубликован, править нечего" % n)
+            continue
+        if not mode:
+            log("Пост %d: ссылок для вшивания нет, не трогаю" % n)
+            continue
+        mid = rec["message_ids"][0]
+        p = {"chat_id": tg.chat_id, "message_id": mid, "caption": text, "parse_mode": mode}
+        if post.get("buttons"):
+            p["reply_markup"] = buttons_markup(post)
+        try:
+            tg.call("editMessageCaption", p)
+            log("Пост %d (сообщение %s): подпись обновлена, ссылок %d%s" % (
+                n, mid, text.count("<a href="), ", кнопки на месте" if post.get("buttons") else ""))
+        except TgError as err:
+            if "not modified" in str(err):
+                log("Пост %d (сообщение %s): уже в нужном виде" % (n, mid))
+            else:
+                failed += 1
+                log("Пост %d (сообщение %s) не обновлён: %s" % (n, mid, err))
+        time.sleep(PAUSE)
+    return 1 if failed else 0
+
+
 def main():
     for stream in (sys.stdout, sys.stderr):
         try:
@@ -275,7 +332,7 @@ def main():
         except Exception:
             pass
     ap = argparse.ArgumentParser(description="Стартовые посты канала Каземата")
-    ap.add_argument("mode", choices=["check", "publish"])
+    ap.add_argument("mode", choices=["check", "publish", "edit"])
     ap.add_argument("--root", default=str(Path(__file__).resolve().parents[2]))
     a = ap.parse_args()
     root = Path(a.root)
@@ -286,7 +343,11 @@ def main():
         return 1
     tg = Telegram(token, chat)
     try:
-        return check(tg, data) if a.mode == "check" else publish(tg, data, root)
+        if a.mode == "check":
+            return check(tg, data)
+        if a.mode == "edit":
+            return edit(tg, data, root)
+        return publish(tg, data, root)
     except TgError as err:
         log("Ошибка Telegram: %s" % err)
         return 1
