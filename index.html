@@ -137,6 +137,8 @@ textarea { min-height: 130px; resize: vertical; }
 .order .bottom { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; }
 .order .btn { border-color: var(--ink); color: var(--ink); }
 .order .btn:hover, .order .btn:focus-visible { background: var(--ink); color: var(--paper); }
+.order .btn.ink { background: var(--ink); color: var(--paper); }
+.order .btn.ink:hover, .order .btn.ink:focus-visible { background: var(--stamp); border-color: var(--stamp); }
 .order .copied { font-size: 15px; color: var(--stamp); }
 .stamp { position: absolute; right: 16px; top: 16px; border: 3px solid var(--stamp); color: var(--stamp); font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.08em; padding: 6px 14px; transform: rotate(-9deg); opacity: 0; pointer-events: none; mix-blend-mode: multiply; }
 .stamp.on { opacity: 0.85; animation: slam .35s cubic-bezier(.2,.9,.3,1.4); }
@@ -211,6 +213,19 @@ textarea { min-height: 130px; resize: vertical; }
 .keys { width: 100%; border-collapse: collapse; font-size: 15px; }
 .keys td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .keys td:first-child { font-family: var(--mono); color: var(--ember); white-space: nowrap; width: 1%; }
+
+/* памятка родителям */
+.memo { background: var(--paper); color: var(--ink); max-width: 860px; padding: 26px 28px 24px; position: relative; box-shadow: 0 1px 0 var(--paper-edge), 0 18px 40px rgba(0,0,0,0.45); }
+.memo::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(42,33,24,0.35); pointer-events: none; }
+.memo .doc { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: var(--mono); font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+.memo dl { margin: 0; display: grid; grid-template-columns: 13em minmax(0, 1fr); gap: 0 20px; }
+.memo dt { font-family: var(--display); font-weight: 700; font-size: 19px; padding: 12px 0; border-top: 1px dotted rgba(42,33,24,0.35); }
+.memo dd { margin: 0; padding: 12px 0; border-top: 1px dotted rgba(42,33,24,0.35); font-size: 16px; }
+@media (max-width: 640px) {
+  .memo { padding: 24px 18px 20px; }
+  .memo dl { grid-template-columns: minmax(0, 1fr); }
+  .memo dd { border-top: 0; padding-top: 0; }
+}
 
 /* вопросы */
 .faq { max-width: 860px; border-top: 1px solid var(--rule); }
@@ -296,6 +311,7 @@ body.typing .bar { transform: translateY(110%); }
     </div>
     <div class="more">
       <a class="textlink" href="#prikaz">Составить приказ</a>
+      <a class="textlink" href="#roditelyam">Для родителей</a>
     </div>
     <div class="seats" aria-live="polite">
       <span id="seats-text">Сезон I: свободно <b>12</b> мест из <b>12</b></span>
@@ -312,9 +328,9 @@ body.typing .bar { transform: translateY(110%); }
       <p class="intro">Всё просто, но по-честному: у каждого участника ограниченное число приказов, поэтому каждое изменение весит</p>
       <ol class="steps">
         <li><h3>Выбери звание</h3><p>Звание определяет, сколько приказов ты отдашь за сезон: от одного до трёх</p></li>
-        <li><h3>Внеси взнос</h3><p>Взнос переводит родитель или ты с его разрешения. Реквизиты организатор пришлёт лично</p></li>
-        <li><h3>Составь приказ</h3><p>В конструкторе ниже опиши, что изменить и где. Скопируй готовый текст</p></li>
-        <li><h3>Отправь организатору</h3><p>Перешли приказ тому, кто дал тебе эту ссылку. Он проверит и ответит</p></li>
+        <li><h3>Составь приказ</h3><p>В конструкторе ниже опиши, что изменить и где</p></li>
+        <li><h3>Отправь организатору</h3><p>Кнопкой под приказом, прямо в Telegram. Организатор проверит приказ и ответит</p></li>
+        <li><h3>Внеси взнос</h3><p>Реквизиты организатор пришлёт лично. Переводит родитель или ты с его разрешения</p></li>
         <li><h3>Найди себя в игре</h3><p>Принятый приказ войдёт в новую версию игры, а позывной появится в летописи</p></li>
       </ol>
     </div>
@@ -327,6 +343,7 @@ body.typing .bar { transform: translateY(110%); }
       <p class="intro">Один приказ - одно небольшое изменение. Крупное изменение, например новая комната или новый монстр, стоит два приказа</p>
       <div class="ranks" id="ranks"></div>
       <p class="note">Больше трёх приказов на одного участника в сезоне не бывает, даже за доплату. Так у всех равные шансы, а игра не превращается в чью-то одну</p>
+      <p class="note"><b>Как оплатить:</b> сначала отправь приказ организатору, реквизиты он пришлёт лично. Переводит родитель или ты с его разрешения. <a href="#roditelyam">Памятка для родителей</a></p>
       <p class="note" id="ranks-seats"></p>
     </div>
   </section>
@@ -354,7 +371,7 @@ body.typing .bar { transform: translateY(110%); }
     <div class="wrap">
       <p class="kicker">Конструктор</p>
       <h2>Составь приказ</h2>
-      <p class="intro">Заполни поля, и приказ соберётся на бумаге. Нажми «Скопировать» и отправь текст организатору вместе с подтверждением оплаты</p>
+      <p class="intro">Заполни поля, и приказ соберётся на бумаге. Отправь его организатору в Telegram: он проверит приказ и пришлёт реквизиты для взноса</p>
       <div class="builder">
         <form id="order-form" novalidate>
           <label for="f-callsign">Позывной
@@ -392,8 +409,9 @@ body.typing .bar { transform: translateY(110%); }
           <div class="row"><span>Суть</span><span id="o-text" class="empty">опиши, что изменить</span></div>
           <div class="row"><span>Родители</span><span id="o-parent" class="empty">не отмечено</span></div>
           <div class="bottom">
+            <a class="btn ink" id="send-org" href="#prikaz" target="_blank" rel="noopener" hidden>Отправить организатору</a>
+            <a class="btn" id="send-tg" href="#prikaz" target="_blank" rel="noopener">Поделиться в Telegram</a>
             <button class="btn" type="button" id="copy">Скопировать приказ</button>
-            <button class="btn" type="button" id="send" hidden>Отправить</button>
             <span class="copied" id="copied" role="status"></span>
           </div>
           <div class="stamp" id="stamp" aria-hidden="true">ГОТОВЪ</div>
@@ -481,6 +499,28 @@ body.typing .bar { transform: translateY(110%); }
     </div>
   </section>
 
+  <section id="roditelyam">
+    <div class="wrap">
+      <p class="kicker">Для родителей</p>
+      <h2>Коротко и честно</h2>
+      <article class="memo">
+        <div class="doc"><span>Памятка</span><span>Мастерская Каземата</span></div>
+        <dl>
+          <dt>Что это</dt>
+          <dd>КАЗЕМАТ - бесплатная хоррор-игра для Android про русский форт 1915 года. В Мастерской участник предлагает изменения в игру: комнату, монстра, надпись. Организатор вручную собирает их в новую версию</dd>
+          <dt>Сколько стоит</dt>
+          <dd id="par-price">Пропуск на сезон: Рядовой 150 ₽, Унтер-офицер 300 ₽, Офицер 450 ₽ (1, 2 или 3 изменения). Платёж разовый, подписок нет, сама игра бесплатная</dd>
+          <dt>Кто получает деньги</dt>
+          <dd>Организатор - взрослый. Реквизиты и вопросы об оплате - через организатора. Платит родитель или ребёнок с вашего разрешения</dd>
+          <dt>Возврат</dt>
+          <dd>Если изменение нельзя выполнить, ребёнок переписывает приказ или вы получаете обратно часть взноса за этот приказ</dd>
+          <dt>Безопасность</dt>
+          <dd>На сайте, в игре и в канале видны только позывные - придуманные прозвища. Настоящие имена, фото и контакты не публикуются. Сайт не требует регистрации и ничего не отправляет на сервер: приказ собирается в браузере, отправляет его сам участник</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
   <section id="voprosy">
     <div class="wrap">
       <p class="kicker">Вопросы</p>
@@ -538,7 +578,7 @@ body.typing .bar { transform: translateY(110%); }
 </nav>
 
 <script type="application/json" id="fallback">
-{"season":{"name":"Сезон I","started":"2026-11-01","seats":12},"telegram":{"url":"https://t.me/masterskayagames","name":"Мастерская ИГРы. Каземат"},"ranks":[{"id":"ryadovoy","name":"Рядовой","price":150,"orders":1,"perks":["1 приказ: одно небольшое изменение в игре","Позывной в летописи игры"]},{"id":"unter","name":"Унтер-офицер","price":300,"orders":2,"perks":["2 приказа: два небольших или одно крупное изменение","Позывной в летописи и в титрах игры"]},{"id":"ofitser","name":"Офицер","price":450,"orders":3,"perks":["3 приказа, это максимум на сезон","Позывной в летописи и в титрах игры","Твой позывной краской на стене каземата","Голос при выборе темы следующего сезона"]}],"catalog":[{"id":"note","name":"Надпись или записка","cost":1,"desc":"Твой текст на стене, записка солдата, плакат","tip":"Напиши сам текст и где он висит. Короткие надписи читаются лучше"},{"id":"prop","name":"Предмет в комнату","cost":1,"desc":"Ящик, бочка, оружейная стойка, полевой телефон","tip":"Что за предмет и где стоит. Можно ли его взять или сдвинуть"},{"id":"rule","name":"Правило игры","cost":1,"desc":"Больше патронов, быстрее монстры, ярче лампа. В разумных пределах","tip":"Что изменить и насколько. Например: лампа светит вдвое дальше"},{"id":"sound","name":"Звук или музыка","cost":1,"desc":"Новый звук или настроение музыки в определённом месте","tip":"Какой звук, где и когда он звучит. Можно сравнить с чем-то знакомым"},{"id":"egg","name":"Пасхалка","cost":1,"desc":"Секрет, который найдёт только внимательный","tip":"Что спрятано и как его найти. Суть пасхалки на доске и в канале не показываем, пусть ищут"},{"id":"room","name":"Новая комната","cost":2,"desc":"Комната или проход по твоему замыслу","tip":"Что за комната, откуда в неё вход и что внутри"},{"id":"monster","name":"Новый монстр","cost":2,"desc":"Другой вид отравленного: внешность и повадки","tip":"Как выглядит, как двигается, где прячется и чего боится"},{"id":"weapon","name":"Оружие или снаряжение","cost":2,"desc":"Винтовка, граната, противогаз от газа","tip":"Что это, где его найти и чем оно отличается от нагана"},{"id":"mech","name":"Новая механика","cost":2,"desc":"Например, запирать двери или прятаться в шкафу","tip":"Что делает игрок и что от этого меняется в игре"},{"id":"other","name":"Другое","cost":0,"desc":"","tip":"Опиши идею как можешь. Организатор скажет, сколько приказов она стоит"}],"game":{"version":"1.0.1","date":"2026-11-01","size_mb":66,"download":"https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk"},"garrison":[],"orders":[]}
+{"season":{"name":"Сезон I","started":"2026-11-01","seats":12},"telegram":{"url":"https://t.me/masterskayagames","name":"Мастерская ИГРы. Каземат"},"ranks":[{"id":"ryadovoy","name":"Рядовой","price":150,"orders":1,"perks":["1 приказ: одно небольшое изменение в игре","Позывной в летописи игры"]},{"id":"unter","name":"Унтер-офицер","price":300,"orders":2,"perks":["2 приказа: два небольших или одно крупное изменение","Позывной в летописи и в титрах игры"]},{"id":"ofitser","name":"Офицер","price":450,"orders":3,"perks":["3 приказа, это максимум на сезон","Позывной в летописи и в титрах игры","Твой позывной краской на стене каземата","Голос при выборе темы следующего сезона"]}],"catalog":[{"id":"note","name":"Надпись или записка","cost":1,"desc":"Твой текст на стене, записка солдата, плакат","tip":"Напиши сам текст и где он висит. Короткие надписи читаются лучше"},{"id":"prop","name":"Предмет в комнату","cost":1,"desc":"Ящик, бочка, оружейная стойка, полевой телефон","tip":"Что за предмет и где стоит. Можно ли его взять или сдвинуть"},{"id":"rule","name":"Правило игры","cost":1,"desc":"Больше патронов, быстрее монстры, ярче лампа. В разумных пределах","tip":"Что изменить и насколько. Например: лампа светит вдвое дальше"},{"id":"sound","name":"Звук или музыка","cost":1,"desc":"Новый звук или настроение музыки в определённом месте","tip":"Какой звук, где и когда он звучит. Можно сравнить с чем-то знакомым"},{"id":"egg","name":"Пасхалка","cost":1,"desc":"Секрет, который найдёт только внимательный","tip":"Что спрятано и как его найти. Суть пасхалки на доске и в канале не показываем, пусть ищут"},{"id":"room","name":"Новая комната","cost":2,"desc":"Комната или проход по твоему замыслу","tip":"Что за комната, откуда в неё вход и что внутри"},{"id":"monster","name":"Новый монстр","cost":2,"desc":"Другой вид отравленного: внешность и повадки","tip":"Как выглядит, как двигается, где прячется и чего боится"},{"id":"weapon","name":"Оружие или снаряжение","cost":2,"desc":"Винтовка, граната, противогаз от газа","tip":"Что это, где его найти и чем оно отличается от нагана"},{"id":"mech","name":"Новая механика","cost":2,"desc":"Например, запирать двери или прятаться в шкафу","tip":"Что делает игрок и что от этого меняется в игре"},{"id":"other","name":"Другое","cost":0,"desc":"","tip":"Опиши идею как можешь. Организатор скажет, сколько приказов она стоит"}],"game":{"version":"1.0.1","date":"2026-11-01","size_mb":66,"download":"https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk"},"garrison":[],"orders":[],"organizer":{"telegram":"Gorskaya_Respublica"}}
 </script>
 <script>
 (function () {
@@ -598,6 +638,8 @@ body.typing .bar { transform: translateY(110%); }
     data.ranks.forEach(function (r) { var o = el("option", null, r.name + " · " + r.price + " ₽"); o.value = r.id; sel.appendChild(o); });
     if (keep) sel.value = keep;
     var max = Math.max.apply(null, data.ranks.map(function (r) { return r.orders; }));
+    $("par-price").textContent = "Пропуск на сезон: " + data.ranks.map(function (r) { return r.name + " " + r.price + " ₽"; }).join(", ") +
+      " (" + data.ranks.map(function (r) { return r.orders; }).join(", ").replace(/, (\d+)$/, " или $1") + " " + plural(max, ["изменение", "изменения", "изменений"]) + "). Платёж разовый, подписок нет, сама игра бесплатная";
     $("faq-price").textContent = "Игра бесплатная. Платный только пропуск в гарнизон: " +
       data.ranks.map(function (r) { return r.name + " " + r.price + " ₽ за " + r.orders + " " + ordersWord(r.orders); }).join(", ") +
       ". Больше " + max + " " + plural(max, ["приказа", "приказов", "приказов"]) + " на участника за сезон не бывает, даже за доплату";
@@ -776,6 +818,7 @@ body.typing .bar { transform: translateY(110%); }
     if (o.type.cost > o.rank.orders) {
       setWarn("Это изменение стоит " + o.type.cost + " " + ordersWord(o.type.cost) + ", а у звания «" + o.rank.name + "» " + (o.rank.orders === 1 ? "только 1" : o.rank.orders), rankFor(o.type.cost));
     } else { setWarn(""); }
+    updateSendLinks(orderText(o));
     $("stamp").classList.remove("on");
     $("copied").textContent = "";
   }
@@ -831,12 +874,34 @@ body.typing .bar { transform: translateY(110%); }
     });
   }
 
-  function sendOrder() {
-    withValidOrder(function (text) {
-      navigator.share({title: "Приказ по гарнизону Каземата", text: text}).then(function () {
-        $("copied").textContent = "Приказ отправлен"; slam();
-      }, function () {});
+  function organizer() {
+    var u = String(((data.organizer || {}).telegram) || "").trim().replace(/^@/, "");
+    return /^[A-Za-z0-9_]{4,32}$/.test(u) ? u : "";
+  }
+
+  function pageUrl() { return location.href.split("#")[0].split("?")[0]; }
+
+  function updateSendLinks(text) {
+    var org = organizer();
+    $("send-org").hidden = !org;
+    $("send-tg").hidden = !!org;
+    if (org) $("send-org").href = "https://t.me/" + org + "?text=" + encodeURIComponent(text);
+    $("send-tg").href = "https://t.me/share/url?url=" + encodeURIComponent(pageUrl()) + "&text=" + encodeURIComponent(text);
+  }
+
+  function sendClick(ev) {
+    var o = currentOrder(), problem = checkOrder(o);
+    if (problem) {
+      ev.preventDefault();
+      setWarn(problem[0], problem[1] === "f-rank" ? rankFor(o.type.cost) : null);
+      var f = $(problem[1]); if (f) f.focus();
+      return;
+    }
+    updateSendLinks(orderText(o));
+    copyText(orderText(o), function (ok) {
+      $("copied").textContent = ok ? "Открываю Telegram. Текст ещё и скопирован: если не подставился, вставь его в чат" : "Открываю Telegram";
     });
+    slam();
   }
 
   function sharePage() {
@@ -864,7 +929,8 @@ body.typing .bar { transform: translateY(110%); }
     $(id).addEventListener("input", updateOrder); $(id).addEventListener("change", updateOrder);
   });
   $("copy").addEventListener("click", copyOrder);
-  if (navigator.share) { $("send").hidden = false; $("send").addEventListener("click", sendOrder); }
+  $("send-org").addEventListener("click", sendClick);
+  $("send-tg").addEventListener("click", sendClick);
   $("share").addEventListener("click", sharePage);
   setupBar();
 
@@ -874,6 +940,7 @@ body.typing .bar { transform: translateY(110%); }
       if (!d || !d.ranks) return;
       if (!d.catalog) d.catalog = data.catalog;
       if (!d.telegram) d.telegram = data.telegram;
+      if (!d.organizer) d.organizer = data.organizer;
       data = d; renderAll();
     })
     .catch(function () {});

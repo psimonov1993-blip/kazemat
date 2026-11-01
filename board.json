@@ -25,5 +25,6 @@
     "download": "https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk"
   },
   "garrison": [],
-  "orders": []
+  "orders": [],
+  "organizer": {"telegram": "Gorskaya_Respublica"}
 }
