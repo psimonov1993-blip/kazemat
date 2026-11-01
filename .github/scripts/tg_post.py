@@ -13,6 +13,7 @@
 
 Флаги: --dry-run печатает готовые посты и ничего не отправляет; --root корень сайта (по умолчанию два уровня выше скрипта)
 Секреты берутся из окружения: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID. Если их нет, публикация пропускается, код выхода 0
+Необязательный TELEGRAM_ADMIN_CHAT_ID: подробная копия каждого изменения доски и релиза в личку организатору
 После отправки id постов дописываются в news.json, по нему сайт показывает ленту
 """
 import argparse
@@ -242,6 +243,78 @@ def board_messages(old, new):
     return msgs
 
 
+# ---------- подробная копия организатору в личку ----------
+
+def admin_report(old, new, title=""):
+    """Все изменения доски одним сообщением, с полными текстами приказов. None, если доска не менялась"""
+    lines = []
+    total = int((new.get("season") or {}).get("seats") or 12)
+    garrison = [m for m in new.get("garrison") or [] if m.get("callsign")]
+    old_m = {str(m.get("callsign")).casefold(): m for m in old.get("garrison") or [] if m.get("callsign")}
+    new_m = {str(m.get("callsign")).casefold(): m for m in garrison}
+    for k, m in new_m.items():
+        om = old_m.get(k)
+        if om is None:
+            lines.append("Новый боец: <b>%s</b>, %s, приказов %s. Свободно мест %d из %d"
+                         % (e(m["callsign"]), e(m.get("rank")), e(m.get("orders")), max(total - len(garrison), 0), total))
+        elif om.get("rank") != m.get("rank"):
+            lines.append("Звание: <b>%s</b> %s → %s" % (e(m["callsign"]), e(om.get("rank")), e(m.get("rank"))))
+    for k, m in old_m.items():
+        if k not in new_m:
+            lines.append("Убран из гарнизона: <b>%s</b> (%s)" % (e(m.get("callsign")), e(m.get("rank"))))
+
+    old_o = {o.get("n"): o for o in old.get("orders") or []}
+    new_o = {o.get("n"): o for o in new.get("orders") or [] if o.get("n") is not None}
+    for n in sorted(new_o, key=int):
+        o, oo = new_o[n], old_o.get(n)
+        head = "№ %s от <b>%s</b>: %s, %s %s, %s" % (e(n), e(o.get("callsign")), e(o.get("type")), e(o.get("cost")),
+                                                   orders_word(int(o.get("cost") or 0)), e(o.get("place")))
+        st = STATUS_WORD.get(o.get("status"), o.get("status")) + (" v%s" % o["version"] if o.get("version") else "")
+        if oo is None:
+            lines.append("Новый приказ %s. Статус: %s%s\n<blockquote>%s</blockquote>"
+                         % (head, e(st), ", секретный" if o.get("secret") else "", e(o.get("text"))))
+        else:
+            if oo.get("status") != o.get("status") or oo.get("version") != o.get("version"):
+                ost = STATUS_WORD.get(oo.get("status"), oo.get("status")) + (" v%s" % oo["version"] if oo.get("version") else "")
+                lines.append("Приказ %s: %s → <b>%s</b>" % (head, e(ost), e(st)))
+            if oo.get("text") != o.get("text"):
+                lines.append("Приказ № %s: текст изменён\n<blockquote>%s</blockquote>" % (e(n), e(o.get("text"))))
+    for n, o in old_o.items():
+        if n not in new_o:
+            lines.append("Приказ № %s от %s удалён с доски" % (e(n), e(o.get("callsign"))))
+
+    os_, ns = old.get("season") or {}, new.get("season") or {}
+    if os_ != ns:
+        lines.append("Сезон: %s, мест %s → %s, мест %s" % (e(os_.get("name")), e(os_.get("seats")), e(ns.get("name")), e(ns.get("seats"))))
+    old_r = {r.get("id"): r for r in old.get("ranks") or []}
+    for r in new.get("ranks") or []:
+        o = old_r.get(r.get("id"))
+        if o and (o.get("price"), o.get("orders")) != (r.get("price"), r.get("orders")):
+            lines.append("Звание %s: %s ₽ / %s → %s ₽ / %s" % (e(r.get("name")), e(o.get("price")), e(o.get("orders")), e(r.get("price")), e(r.get("orders"))))
+    covered = {"season", "ranks", "garrison", "orders"}
+    other = sorted(k for k in set(old) | set(new) if k not in covered and old.get(k) != new.get(k))
+    if other:
+        lines.append("Изменены разделы: %s" % ", ".join(e(k) for k in other))
+    if not lines:
+        return None
+    text = "<b>Доска Каземата изменилась</b>" + ("\n%s" % e(title) if title else "") + "\n\n" + "\n\n".join(lines)
+    if len(text) > 3900:
+        text = text[:3900].rsplit("\n", 1)[0] + "\n…"
+    return Msg("Копия организатору", text)
+
+
+def admin_release(msg, url=""):
+    text = "<b>Копия: пост о релизе</b>" + ("\n%s" % e(url) if url else "") + "\n\n" + msg.text
+    return Msg("Копия организатору", text[:3900])
+
+
+def commit_title(root, sha):
+    if not sha:
+        return ""
+    out = subprocess.run(["git", "log", "-1", "--format=%h %s", sha], cwd=root, capture_output=True)
+    return out.stdout.decode("utf-8", "replace").strip()
+
+
 # ---------- пост о релизе ----------
 
 def release_body(body):
@@ -397,20 +470,40 @@ def record_news(root, channel, sent):
     log("news.json: дописано постов %d" % len(sent))
 
 
-def publish(msgs, root, dry_run):
+def send_admin(admin, token, dry_run):
+    """Копия в личку организатору. Без TELEGRAM_ADMIN_CHAT_ID молча пропускается, ошибка не роняет запуск"""
+    if admin is None:
+        return
+    chat = os.environ.get("TELEGRAM_ADMIN_CHAT_ID", "").strip()
+    if dry_run:
+        show([admin], "Копия организатору в личку (%s):" % ("будет отправлена" if chat else "секрет TELEGRAM_ADMIN_CHAT_ID не задан, не отправится"))
+        return
+    if not chat or not token:
+        return
+    try:
+        res = Telegram(token, chat).deliver(admin)
+        log("Копия организатору отправлена, message_id %s" % res.get("message_id"))
+    except TgError as err:
+        log("Копия организатору не ушла: %s (публикацию в канале это не отменяет)" % err)
+
+
+def publish(msgs, root, dry_run, admin=None):
+    token, chat = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip(), os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if not msgs:
         log("Изменений для канала нет, публиковать нечего")
         summary(["Изменений для канала нет"])
+        send_admin(admin, token, dry_run)
         return 0
-    token, chat = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip(), os.environ.get("TELEGRAM_CHAT_ID", "").strip()
     if dry_run:
         show(msgs, "Режим проверки: посты собраны, в канал не отправлены")
         summary(["Проверка: %d пост(ов) собрано, не отправлено" % len(msgs)] + ["- " + m.title for m in msgs])
+        send_admin(admin, token, dry_run)
         return 0
     if not token or not chat:
         show(msgs, "секреты не заданы, публикация пропущена")
         summary(["Секреты не заданы, публикация пропущена"] + ["- " + m.title for m in msgs])
         return 0
+    send_admin(admin, token, dry_run)
     tg = Telegram(token, chat)
     sent, failed, channel = [], 0, ""
     for i, m in enumerate(msgs):
@@ -483,9 +576,11 @@ def main():
     root = Path(a.root)
 
     if a.mode == "board":
+        title = ""
         if a.old or a.new:
             old, new = read_json(a.old), read_json(a.new)
         else:
+            title = commit_title(root, a.after or "HEAD")
             new = git_board(root, a.after or "HEAD")
             old = git_board(root, a.before)
             if new is None:
@@ -494,7 +589,7 @@ def main():
             if old is None:
                 log("Прошлой версии board.json нет (новая ветка или перезапись истории), сравнивать не с чем")
                 return 0
-        return publish(board_messages(old, new), root, a.dry_run)
+        return publish(board_messages(old, new), root, a.dry_run, admin_report(old, new, title))
 
     if a.mode == "release":
         board = read_json(root / "board.json") if (root / "board.json").exists() else {}
@@ -503,11 +598,12 @@ def main():
             if rel.get("draft"):
                 log("Черновик релиза, публиковать рано")
                 return 0
-            tag, name, body = rel.get("tag_name"), rel.get("name") or "", rel.get("body") or ""
+            tag, name, body, url = rel.get("tag_name"), rel.get("name") or "", rel.get("body") or "", rel.get("html_url") or ""
         else:
-            tag, name = a.tag, a.name
+            tag, name, url = a.tag, a.name, ""
             body = Path(a.body_file).read_text(encoding="utf-8") if a.body_file else ""
-        return publish([release_message(tag, name, body, board)], root, a.dry_run)
+        msg = release_message(tag, name, body, board)
+        return publish([msg], root, a.dry_run, admin_release(msg, url))
 
     if a.mode == "latest":
         out = subprocess.run(["git", "log", "-n", "1", "--format=%H", "--", "board.json"], cwd=root, capture_output=True, text=True)
