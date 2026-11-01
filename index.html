@@ -116,9 +116,9 @@ h2 { font-size: clamp(30px, 4.4vw, 44px); margin-bottom: 10px; }
 .builder { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; align-items: start; }
 form { display: grid; gap: 18px; min-width: 0; }
 label { display: grid; gap: 6px; font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); min-width: 0; }
-input[type=text], select, textarea { font: 16px/1.5 var(--body); color: var(--text); background: var(--ground-2); border: 1px solid var(--rule); padding: 11px 12px; width: 100%; min-height: 48px; text-transform: none; letter-spacing: 0; border-radius: 0; }
+input[type=text], input[type=search], select, textarea { font: 16px/1.5 var(--body); color: var(--text); background: var(--ground-2); border: 1px solid var(--rule); padding: 11px 12px; width: 100%; min-height: 48px; text-transform: none; letter-spacing: 0; border-radius: 0; }
 select { -webkit-appearance: none; appearance: none; padding-right: 40px; background-image: linear-gradient(45deg, transparent 50%, var(--ember) 50%), linear-gradient(135deg, var(--ember) 50%, transparent 50%); background-position: calc(100% - 20px) 52%, calc(100% - 14px) 52%; background-size: 6px 6px; background-repeat: no-repeat; text-overflow: ellipsis; }
-input[type=text]:focus, select:focus, textarea:focus { border-color: var(--ember); outline: none; }
+input[type=text]:focus, input[type=search]:focus, select:focus, textarea:focus { border-color: var(--ember); outline: none; }
 textarea { min-height: 130px; resize: vertical; }
 .hint { font-family: var(--body); font-size: 15px; line-height: 1.45; letter-spacing: 0; text-transform: none; color: var(--text-dim); }
 .hint b { color: var(--ember); font-weight: 400; font-family: var(--mono); }
@@ -208,8 +208,23 @@ textarea { min-height: 130px; resize: vertical; }
 .shots figcaption { font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
 .install { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 16px; }
 .install li::marker { font-family: var(--mono); color: var(--ember); }
-.install li.if { color: var(--text-dim); }
-.install li.if::marker { content: "!  "; color: var(--stamp); font-weight: 700; }
+.help { scroll-margin-top: 16px; border: 1px solid var(--rule); border-left: 3px solid var(--stamp); background: var(--ground-2); }
+.help summary { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; cursor: pointer; list-style: none; font-family: var(--display); font-weight: 700; font-size: 20px; }
+.help summary::-webkit-details-marker { display: none; }
+.help summary::after { content: "+"; font-family: var(--mono); font-weight: 400; font-size: 24px; color: var(--ember); }
+.help[open] summary::after { content: "-"; }
+.help ul { list-style: none; margin: 0; padding: 0 16px 14px; display: grid; gap: 10px; }
+.help li { display: grid; gap: 2px; font-size: 16px; color: var(--text-dim); border-top: 1px solid var(--rule); padding-top: 10px; }
+.help li b { color: var(--text); font-weight: 700; }
+.finder { display: grid; gap: 8px; max-width: 520px; margin-bottom: 22px; }
+.find-result { margin: 0; font-family: var(--mono); font-size: 15px; color: var(--ember); min-height: 1.4em; }
+.strip a.post { display: inline-flex; align-items: center; min-height: 44px; }
+.strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 22px; border: 1px solid var(--rule); border-left: 3px solid var(--ember); background: var(--ground-2); padding: 12px 18px; font-size: 16px; color: var(--text-dim); }
+.strip .label { font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ember); }
+.strip b { color: var(--text); font-weight: 400; font-family: var(--mono); }
+.strip ul { flex-basis: 100%; margin: 0; padding-left: 20px; color: var(--text); }
+.strip a.post { color: var(--text); }
+#novoe { padding-block: 24px 0; }
 .keys { width: 100%; border-collapse: collapse; font-size: 15px; }
 .keys td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .keys td:first-child { font-family: var(--mono); color: var(--ember); white-space: nowrap; width: 1%; }
@@ -312,6 +327,7 @@ body.typing .bar { transform: translateY(110%); }
     <div class="more">
       <a class="textlink" href="#prikaz">Составить приказ</a>
       <a class="textlink" href="#roditelyam">Для родителей</a>
+      <a class="textlink" href="#novoe">Что нового</a>
     </div>
     <div class="seats" aria-live="polite">
       <span id="seats-text">Сезон I: свободно <b>12</b> мест из <b>12</b></span>
@@ -321,6 +337,18 @@ body.typing .bar { transform: translateY(110%); }
 </header>
 
 <main>
+  <section id="novoe">
+    <div class="wrap">
+      <div class="strip">
+        <span class="label">Что нового</span>
+        <span id="new-ver">Версия <b>1.0.1</b> от 1 ноября 2026</span>
+        <span id="new-post" hidden>Последняя сводка: <a class="post" href="#shtab" target="_blank" rel="noopener"></a></span>
+        <a class="textlink" id="new-feed" href="#shtab" hidden>Все сводки</a>
+        <ul id="game-notes" hidden></ul>
+      </div>
+    </div>
+  </section>
+
   <section id="kak">
     <div class="wrap">
       <p class="kicker">Как это работает</p>
@@ -425,6 +453,12 @@ body.typing .bar { transform: translateY(110%); }
       <p class="kicker">Доска приказов</p>
       <h2>Что уже приказано</h2>
       <p class="intro">Сюда попадает каждый приказ, который организатор получил. Статус меняется, когда приказ проверен и когда он вошёл в игру</p>
+      <div class="finder" id="finder" hidden>
+        <label for="f-find">Найти свои приказы
+          <input type="search" id="f-find" placeholder="Впиши свой позывной" autocomplete="off" enterkeyhint="search">
+        </label>
+        <p class="find-result" id="find-result" role="status"></p>
+      </div>
       <div id="board"></div>
     </div>
   </section>
@@ -478,8 +512,18 @@ body.typing .bar { transform: translateY(110%); }
             <li>Телефон спросит, можно ли ставить приложения из браузера. Открой настройки и разреши</li>
             <li>Нажми «Установить». Если Play Защита предупредит про неизвестного разработчика, выбери «Всё равно установить»</li>
             <li>Найди на экране значок КАЗЕМАТ. Играть лучше в наушниках и с выключенным светом</li>
-            <li class="if">Если пишет «Приложение не установлено», удали старую версию КАЗЕМАТ, если она есть, и проверь, что на телефоне свободно 300 МБ. На Samsung может мешать «Автоблокировщик»: Настройки - Безопасность - Автоблокировщик, выключи его на время установки</li>
           </ol>
+          <details class="help" id="pomosh">
+            <summary>Игра не ставится?</summary>
+            <ul>
+              <li><b>«Приложение не установлено»</b> Удали старую версию КАЗЕМАТ, если она есть, и поставь заново</li>
+              <li><b>Телефон не даёт открыть файл</b> В настройках найди «Установка неизвестных приложений» и разреши её для браузера, которым скачивал</li>
+              <li><b>Samsung</b> Может мешать «Автоблокировщик»: Настройки - Безопасность - Автоблокировщик, выключи его на время установки</li>
+              <li><b>Мало места</b> Нужно свободно 300 МБ</li>
+              <li><b>Старый телефон</b> Игра работает на Android 7 и новее</li>
+              <li><b>iPhone</b> Не получится: Apple разрешает ставить игры только из App Store</li>
+            </ul>
+          </details>
           <p class="note" style="margin:0">На iPhone игру поставить нельзя: Apple разрешает устанавливать игры только из App Store</p>
           <table class="keys">
             <tr><td>Левый палец</td><td>идти, джойстик до упора вперёд - бег</td></tr>
@@ -530,6 +574,7 @@ body.typing .bar { transform: translateY(110%); }
         <details><summary>Как заплатить?</summary><p class="a">Сначала составь приказ и отправь его организатору. Реквизиты он пришлёт лично. Переводит родитель или ты с его разрешения, деньги получает взрослый организатор</p></details>
         <details><summary>А если приказ не примут?</summary><p class="a">Организатор объяснит, что не так, и приказ можно переписать. Если выполнить его не получится совсем, вернётся его часть взноса</p></details>
         <details><summary>Когда изменение появится в игре?</summary><p class="a">Ответ на приказ обычно приходит за 1-3 дня. Принятый приказ входит в следующую версию игры, скачать её можно здесь же</p></details>
+        <details><summary>Игра не ставится</summary><p class="a">Удали старую версию, разреши установку из браузера, освободи 300 МБ. Всё по шагам в блоке <a href="#pomosh">«Игра не ставится?»</a> под инструкцией по установке</p></details>
         <details><summary>Можно играть на iPhone?</summary><p class="a">Нет, только на Android 7 и новее. Apple разрешает ставить игры только из App Store, а КАЗЕМАТ скачивается с этого сайта</p></details>
         <details><summary>Слишком темно, ничего не видно</summary><p class="a">Темнота задумана, но её можно подстроить: в меню и на паузе есть ползунок «Яркость»</p></details>
       </div>
@@ -662,9 +707,24 @@ body.typing .bar { transform: translateY(110%); }
     if (keep) sel.value = keep;
   }
 
+  function applyFind() {
+    var raw = $("f-find").value.trim(), q = raw.toLowerCase(), shown = 0;
+    Array.prototype.forEach.call(document.querySelectorAll("#board .card"), function (c) {
+      var hit = !q || (c.getAttribute("data-callsign") || "").toLowerCase().indexOf(q) !== -1;
+      c.hidden = !hit; if (hit) shown++;
+    });
+    try { localStorage.setItem("kz-find", raw); } catch (e) {}
+    var res = $("find-result");
+    if (!q) { res.textContent = ""; return; }
+    if (!shown) { res.textContent = "Приказов с позывным «" + raw + "» пока нет. Если отправил недавно, приказ появится после проверки"; return; }
+    var m = (data.garrison || []).filter(function (x) { return String(x.callsign).toLowerCase() === q; })[0];
+    res.textContent = "Найдено: " + shown + " " + ordersWord(shown) + (m ? " · " + m.rank + ", отдано " + Math.min(usedBy(m.callsign), m.orders) + " из " + m.orders : "");
+  }
+
   function renderBoard() {
     var box = $("board"); box.textContent = "";
     var orders = data.orders || [];
+    $("finder").hidden = !orders.length;
     if (!orders.length) {
       var e = el("div", "empty-state");
       e.appendChild(el("b", null, "Пока ни одного приказа"));
@@ -673,7 +733,7 @@ body.typing .bar { transform: translateY(110%); }
     }
     var grid = el("div", "board");
     orders.slice().reverse().forEach(function (o) {
-      var c = el("article", "card");
+      var c = el("article", "card"); c.setAttribute("data-callsign", o.callsign || "");
       var h = el("div", "head"); h.appendChild(el("span", null, "Приказ № " + o.n)); h.appendChild(el("span", null, o.place || "")); c.appendChild(h);
       c.appendChild(el("b", null, o.type + (o.cost ? " · " + o.cost + " " + ordersWord(o.cost) : "")));
       if (o.secret) c.appendChild(el("p", "secret", "Суть держим в секрете, пусть ищут"));
@@ -684,6 +744,7 @@ body.typing .bar { transform: translateY(110%); }
       grid.appendChild(c);
     });
     box.appendChild(grid);
+    applyFind();
   }
 
   function usedBy(callsign) {
@@ -765,6 +826,29 @@ body.typing .bar { transform: translateY(110%); }
       var io = new IntersectionObserver(function (en) { if (en.some(function (e) { return e.isIntersecting; })) { io.disconnect(); loadWidgets(); } }, {rootMargin: "600px 0px"});
       io.observe($("news"));
     } else { loadWidgets(); }
+  }
+
+  function renderNew() {
+    var g = data.game || {}, v = $("new-ver"), tg = tgInfo(), posts = newsPosts();
+    v.textContent = "";
+    v.appendChild(document.createTextNode("Версия "));
+    v.appendChild(el("b", null, g.version || "1.0"));
+    if (g.date) v.appendChild(document.createTextNode(" от " + ruDate(g.date)));
+    var ul = $("game-notes"), notes = Array.isArray(g.notes) ? g.notes : [];
+    ul.textContent = ""; notes.forEach(function (t) { ul.appendChild(el("li", null, t)); }); ul.hidden = !notes.length;
+    var np = $("new-post"), a = np.querySelector("a");
+    np.hidden = !posts.length;
+    if (posts.length) { a.href = "https://t.me/" + news.channel + "/" + posts[0].id; a.textContent = "«" + (posts[0].title || "Сводка") + "»" + (posts[0].date ? ", " + ruDate(posts[0].date, true) : ""); }
+    var feed = $("new-feed");
+    feed.hidden = !posts.length && !tg;
+    feed.href = posts.length ? "#shtab" : (tg ? tg.url : "#shtab");
+    if (posts.length) { feed.removeAttribute("target"); } else { feed.target = "_blank"; feed.rel = "noopener"; }
+  }
+
+  function openHelp() {
+    if (location.hash !== "#pomosh") return;
+    var h = $("pomosh"); h.open = true;
+    setTimeout(function () { h.scrollIntoView({block: "start"}); }, 30);
   }
 
   function renderGame() {
@@ -922,9 +1006,19 @@ body.typing .bar { transform: translateY(110%); }
     form.addEventListener("focusout", function () { setTimeout(function () { if (!form.contains(document.activeElement)) document.body.classList.remove("typing"); }, 50); });
   }
 
-  function renderAll() { renderSeats(); renderRanks(); renderCatalog(); renderBoard(); renderGarrison(); renderTelegram(); renderGame(); updateOrder(); }
+  function renderAll() { renderSeats(); renderRanks(); renderCatalog(); renderBoard(); renderGarrison(); renderTelegram(); renderGame(); renderNew(); updateOrder(); }
 
+  try { $("f-find").value = localStorage.getItem("kz-find") || ""; } catch (e) {}
   renderAll();
+  $("f-find").addEventListener("input", applyFind);
+  window.addEventListener("hashchange", openHelp); openHelp();
+  Array.prototype.forEach.call(document.querySelectorAll('a[href="#pomosh"]'), function (a) {
+    a.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      if (location.hash !== "#pomosh") history.pushState(null, "", "#pomosh");
+      location.hash === "#pomosh" ? openHelp() : ($("pomosh").open = true);
+    });
+  });
   ["f-callsign", "f-rank", "f-type", "f-place", "f-text", "f-parent"].forEach(function (id) {
     $(id).addEventListener("input", updateOrder); $(id).addEventListener("change", updateOrder);
   });
@@ -946,7 +1040,7 @@ body.typing .bar { transform: translateY(110%); }
     .catch(function () {});
   fetch("news.json?t=" + Date.now(), {cache: "no-store"})
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (n) { if (n && Array.isArray(n.posts)) { news = n; renderTelegram(); } })
+    .then(function (n) { if (n && Array.isArray(n.posts)) { news = n; renderTelegram(); renderNew(); } })
     .catch(function () {});
 })();
 </script>
