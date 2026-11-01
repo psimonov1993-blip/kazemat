@@ -5,9 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Мастерская Каземата</title>
 <meta name="description" content="Игру КАЗЕМАТ делаем вместе: получи звание, отдай до трёх приказов, и твои изменения войдут в игру">
+<meta name="theme-color" content="#0f0c0a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f0c0a'/%3E%3Cpath d='M6 28V14a10 10 0 0 1 20 0v14z' fill='none' stroke='%23d48b3a' stroke-width='3'/%3E%3Ccircle cx='16' cy='19' r='3' fill='%23d48b3a'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://psimonov1993-blip.github.io/kazemat/">
 <meta property="og:title" content="Мастерская Каземата">
 <meta property="og:description" content="Хоррор про форт 1915 года. Каждый приказ участника становится частью игры">
-<meta property="og:image" content="img/07_vyhod.jpg">
+<meta property="og:image" content="https://psimonov1993-blip.github.io/kazemat/img/07_vyhod.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Mono&display=swap">
@@ -20,6 +25,7 @@
   --text: #e2d7bd;
   --text-dim: #a3977e;
   --paper: #e5d9ba;
+  --paper-2: #efe6cc;
   --paper-edge: #cbbb93;
   --ink: #2a2118;
   --ink-dim: #6a5b46;
@@ -29,34 +35,39 @@
   --display: "Old Standard TT", "PT Serif", Georgia, "Times New Roman", serif;
   --body: "PT Serif", Georgia, "Times New Roman", serif;
   --mono: "PT Mono", "Courier New", monospace;
+  --bar-h: 62px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.6; overflow-wrap: break-word; }
 img { max-width: 100%; display: block; }
 a { color: var(--ember); }
 .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-section { padding-block: 64px 8px; }
+section { padding-block: 64px 8px; scroll-margin-top: 8px; }
 h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance; }
 h2 { font-size: clamp(30px, 4.4vw, 44px); margin-bottom: 10px; }
-.kicker { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ember); margin: 0 0 12px; }
+.kicker { font-family: var(--mono); font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ember); margin: 0 0 12px; }
 .intro { max-width: 64ch; color: var(--text-dim); margin: 0 0 28px; }
-.btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 22px; border: 1px solid var(--ember); color: var(--text); background: transparent; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; font-family: var(--mono); font-size: 15px; line-height: 1.3; letter-spacing: 0.07em; text-transform: uppercase; padding: 12px 22px; border: 1px solid var(--ember); color: var(--text); background: transparent; text-decoration: none; cursor: pointer; transition: background .2s, color .2s, border-color .2s; text-align: center; }
 .btn:hover, .btn:focus-visible { background: var(--ember); color: var(--ground); outline: none; }
 .btn.solid { background: var(--ember); color: var(--ground); }
 .btn.solid:hover, .btn.solid:focus-visible { background: var(--text); border-color: var(--text); }
+.btn svg { width: 20px; height: 20px; flex: none; }
 :focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
 
 /* герой */
 .hero { position: relative; min-height: min(86vh, 760px); display: grid; align-items: end; overflow: hidden; border-bottom: 1px solid var(--rule); }
 .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--ground) 4%, rgba(15,12,10,0.82) 38%, rgba(15,12,10,0.2) 75%); }
-.hero .wrap { position: relative; z-index: 1; padding-block: 120px 56px; display: grid; gap: 20px; }
-.hero h1 { font-size: clamp(46px, 8.5vw, 104px); letter-spacing: 0.02em; }
+.hero .wrap { position: relative; z-index: 1; padding-block: 120px 56px; display: grid; gap: 20px; width: 100%; }
+.hero h1 { font-size: clamp(40px, 8.5vw, 104px); letter-spacing: 0.02em; }
 .hero .lead { max-width: 58ch; font-size: clamp(17px, 2vw, 20px); margin: 0; }
 .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.seats { display: grid; gap: 8px; font-family: var(--mono); font-size: 14px; color: var(--text-dim); }
+.btn.tg { border-color: var(--text-dim); }
+.btn.tg:hover, .btn.tg:focus-visible { border-color: var(--ember); }
+.seats { display: grid; gap: 8px; font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
 .seats b { color: var(--text); font-weight: 400; }
 .seat-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .seat { width: 22px; height: 22px; border: 1px solid var(--ember); }
@@ -65,135 +76,216 @@ h2 { font-size: clamp(30px, 4.4vw, 44px); margin-bottom: 10px; }
 /* шаги */
 .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; list-style: none; margin: 0; padding: 0; counter-reset: step; }
 .steps li { border-top: 2px solid var(--ember); padding-top: 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
-.steps li::before { counter-increment: step; content: "Шаг " counter(step); font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ember); }
+.steps li::before { counter-increment: step; content: "Шаг " counter(step); font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ember); }
 .steps h3 { font-size: 21px; }
-.steps p { margin: 0; color: var(--text-dim); font-size: 15.5px; }
+.steps p { margin: 0; color: var(--text-dim); font-size: 16px; }
 
 /* звания: пропуска на бумаге */
 .ranks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: start; }
 .pass { background: var(--paper); color: var(--ink); padding: 26px 24px 24px; position: relative; box-shadow: 0 1px 0 var(--paper-edge), 0 18px 40px rgba(0,0,0,0.45); display: grid; gap: 14px; min-width: 0; }
 .pass::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(42,33,24,0.35); pointer-events: none; }
-.pass .doc { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+.pass .doc { font-family: var(--mono); font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
 .pass h3 { font-size: 30px; }
 .pass .price { font-family: var(--display); font-size: 44px; line-height: 1; }
 .pass .price small { font-size: 20px; }
-.seals { display: flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 13px; color: var(--ink-dim); }
-.seal { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--stamp); background: radial-gradient(circle, var(--stamp) 38%, transparent 42%); }
-.pass ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15.5px; }
+.seals { display: flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 15px; color: var(--ink-dim); }
+.seal { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--stamp); background: radial-gradient(circle, var(--stamp) 38%, transparent 42%); flex: none; }
+.pass ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 16px; }
 .pass.top { transform: translateY(-10px); }
-.pass.top .ribbon { position: absolute; top: 18px; right: -6px; background: var(--stamp); color: var(--paper); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; }
-.note { font-family: var(--mono); font-size: 13.5px; color: var(--text-dim); margin: 22px 0 0; max-width: 70ch; }
+.pass.top .ribbon { position: absolute; top: 18px; right: -6px; background: var(--stamp); color: var(--paper); font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; }
+.note { font-family: var(--mono); font-size: 15px; color: var(--text-dim); margin: 22px 0 0; max-width: 70ch; }
+.note b { color: var(--text); font-weight: 400; }
 
 /* каталог */
 .catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .cat { border: 1px solid var(--rule); background: var(--ground-2); padding: 22px; display: grid; gap: 12px; align-content: start; min-width: 0; }
-.cat h3 { font-size: 23px; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
-.cat h3 span { font-family: var(--mono); font-size: 12px; color: var(--ember); letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.cat h3 { font-size: 23px; display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.cat h3 span { font-family: var(--mono); font-size: 15px; color: var(--ember); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
 .cat dl { margin: 0; display: grid; gap: 10px; }
 .cat dt { font-weight: 700; }
-.cat dd { margin: 0; color: var(--text-dim); font-size: 15px; }
+.cat dd { margin: 0; color: var(--text-dim); font-size: 15.5px; }
 .cat.no h3 span { color: var(--stamp); }
 
 /* конструктор приказа */
 .builder { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; align-items: start; }
-form { display: grid; gap: 16px; }
-label { display: grid; gap: 6px; font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
-input[type=text], select, textarea { font: 16px/1.5 var(--body); color: var(--text); background: var(--ground-2); border: 1px solid var(--rule); padding: 11px 12px; width: 100%; text-transform: none; letter-spacing: 0; border-radius: 0; }
+form { display: grid; gap: 18px; min-width: 0; }
+label { display: grid; gap: 6px; font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); min-width: 0; }
+input[type=text], select, textarea { font: 16px/1.5 var(--body); color: var(--text); background: var(--ground-2); border: 1px solid var(--rule); padding: 11px 12px; width: 100%; min-height: 48px; text-transform: none; letter-spacing: 0; border-radius: 0; }
+select { -webkit-appearance: none; appearance: none; padding-right: 40px; background-image: linear-gradient(45deg, transparent 50%, var(--ember) 50%), linear-gradient(135deg, var(--ember) 50%, transparent 50%); background-position: calc(100% - 20px) 52%, calc(100% - 14px) 52%; background-size: 6px 6px; background-repeat: no-repeat; text-overflow: ellipsis; }
 input[type=text]:focus, select:focus, textarea:focus { border-color: var(--ember); outline: none; }
-textarea { min-height: 120px; resize: vertical; }
-.check { display: flex; gap: 10px; align-items: flex-start; text-transform: none; letter-spacing: 0; font-family: var(--body); font-size: 15.5px; color: var(--text); }
-.check input { margin-top: 5px; accent-color: var(--ember); width: 18px; height: 18px; flex: none; }
-.warn { font-family: var(--mono); font-size: 13.5px; color: var(--ember); min-height: 1.4em; margin: 0; }
-.order { background: var(--paper); color: var(--ink); padding: 30px 28px; box-shadow: 0 18px 40px rgba(0,0,0,0.45); font-family: var(--mono); font-size: 15px; line-height: 1.65; min-height: 360px; position: sticky; top: 20px; overflow: hidden; }
+textarea { min-height: 130px; resize: vertical; }
+.hint { font-family: var(--body); font-size: 15px; line-height: 1.45; letter-spacing: 0; text-transform: none; color: var(--text-dim); }
+.hint b { color: var(--ember); font-weight: 400; font-family: var(--mono); }
+.count { font-family: var(--mono); font-size: 15px; letter-spacing: 0; text-transform: none; color: var(--text-dim); justify-self: end; }
+.check { display: flex; gap: 12px; align-items: center; min-height: 48px; text-transform: none; letter-spacing: 0; font-family: var(--body); font-size: 16px; color: var(--text); cursor: pointer; }
+.check input { margin: 0; accent-color: var(--ember); width: 22px; height: 22px; flex: none; }
+.warn { font-family: var(--mono); font-size: 15px; color: var(--ember); min-height: 1.4em; margin: 0; display: grid; gap: 10px; justify-items: start; }
+.warn .btn { font-size: 15px; padding: 10px 16px; }
+.order { background: var(--paper); color: var(--ink); padding: 30px 28px; box-shadow: 0 18px 40px rgba(0,0,0,0.45); font-family: var(--mono); font-size: 15px; line-height: 1.65; min-height: 360px; position: sticky; top: 20px; overflow: hidden; min-width: 0; }
 .order h3 { font-family: var(--display); font-size: 26px; text-align: center; margin-bottom: 4px; }
-.order .sub { text-align: center; color: var(--ink-dim); font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 18px; }
+.order .sub { text-align: center; color: var(--ink-dim); font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; }
 .order .row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 8px; border-bottom: 1px dotted rgba(42,33,24,0.35); padding: 4px 0; }
 .order .row span:first-child { color: var(--ink-dim); }
 .order .row span:last-child { overflow-wrap: anywhere; white-space: pre-wrap; }
-.order .empty { color: rgba(42,33,24,0.4); }
+.order .empty { color: rgba(42,33,24,0.45); }
 .order .bottom { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; }
 .order .btn { border-color: var(--ink); color: var(--ink); }
 .order .btn:hover, .order .btn:focus-visible { background: var(--ink); color: var(--paper); }
-.order .copied { font-size: 13px; color: var(--stamp); }
+.order .copied { font-size: 15px; color: var(--stamp); }
 .stamp { position: absolute; right: 16px; top: 16px; border: 3px solid var(--stamp); color: var(--stamp); font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.08em; padding: 6px 14px; transform: rotate(-9deg); opacity: 0; pointer-events: none; mix-blend-mode: multiply; }
 .stamp.on { opacity: 0.85; animation: slam .35s cubic-bezier(.2,.9,.3,1.4); }
 @keyframes slam { from { transform: rotate(-9deg) scale(1.8); opacity: 0; } to { transform: rotate(-9deg) scale(1); opacity: 0.85; } }
 
 /* доска и гарнизон */
 .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 18px; }
-.card { background: var(--paper); color: var(--ink); padding: 18px 20px; display: grid; gap: 8px; font-size: 15px; position: relative; min-width: 0; }
-.card .head { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); }
+.card { background: var(--paper); color: var(--ink); padding: 18px 20px; display: grid; gap: 8px; font-size: 16px; position: relative; min-width: 0; }
+.card .head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: var(--mono); font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-dim); }
 .card b { font-family: var(--display); font-size: 20px; }
 .card p { margin: 0; overflow-wrap: anywhere; }
-.badge { justify-self: start; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border: 2px solid currentColor; transform: rotate(-2deg); }
+.card .secret { font-style: italic; color: var(--ink-dim); }
+.badge { justify-self: start; font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border: 2px solid currentColor; transform: rotate(-2deg); }
 .badge.review { color: var(--ink-dim); }
 .badge.accepted { color: #8a5a12; }
 .badge.done { color: #3d6b16; }
 .badge.returned { color: var(--stamp); }
 .empty-state { border: 1px dashed var(--rule); padding: 30px 24px; color: var(--text-dim); display: grid; gap: 6px; max-width: 70ch; }
 .empty-state b { color: var(--text); font-family: var(--display); font-size: 22px; font-weight: 700; }
-.table-wrap { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 15.5px; }
-th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
-th { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); font-weight: 400; }
-td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.garrison { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 14px; }
+.token { border: 1px solid var(--rule); border-top: 2px solid var(--ember); background: var(--ground-2); padding: 16px 18px; display: grid; gap: 6px; min-width: 0; }
+.token b { font-family: var(--display); font-size: 23px; overflow-wrap: anywhere; }
+.token .rank { font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); }
+.token .left { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
+.pip { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ember); flex: none; }
+.pip.used { background: var(--ember); }
+
+/* штаб в телеграме: бланк телеграммы и лента ленточек */
+.shtab { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.wire { background: var(--paper); color: var(--ink); padding: 26px 24px 24px; position: relative; box-shadow: 0 1px 0 var(--paper-edge), 0 18px 40px rgba(0,0,0,0.45); display: grid; gap: 16px; min-width: 0; }
+.wire::before { content: ""; position: absolute; inset: 8px; border: 1px solid rgba(42,33,24,0.35); pointer-events: none; }
+.wire .doc { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; font-family: var(--mono); font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
+.wire h3 { font-size: clamp(26px, 3.4vw, 34px); }
+.reasons { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.reasons li { display: grid; gap: 6px; min-width: 0; }
+.tape { justify-self: start; max-width: 100%; background: var(--paper-2); color: var(--ink); font-family: var(--mono); font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; padding: 5px 10px; box-shadow: 0 1px 2px rgba(42,33,24,0.35); transform: rotate(-0.6deg); }
+.reasons li:nth-child(2) .tape { transform: rotate(0.5deg); }
+.reasons p { margin: 0; font-size: 16px; color: var(--ink); }
+.wire .btn.solid { justify-self: start; }
+.wire .who { font-family: var(--mono); font-size: 15px; color: var(--ink-dim); margin: 0; }
+.shtab.solo { grid-template-columns: minmax(0, 1fr); }
+.shtab.solo .news { max-width: 760px; }
+@media (min-width: 901px) {
+  .shtab:not(.solo) .wire { position: sticky; top: 20px; }
+  .shtab.solo .reasons { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .shtab.solo .wire { padding: 30px 32px 28px; }
+}
+.news { display: grid; gap: 14px; min-width: 0; }
+.news h3 { font-size: 24px; }
+.news-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.news-item { display: grid; gap: 6px; min-width: 0; }
+.news-item iframe { min-width: 0 !important; max-width: 100% !important; }
+@media (max-width: 760px) { .news-item:nth-child(n+4) { display: none; } }
+@media (max-width: 351px) { .news-item iframe { width: calc(100% + 32px) !important; max-width: none !important; margin: 0 -16px; } }
+.news-link { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; align-items: center; min-height: 44px; padding: 8px 0; border-bottom: 1px solid var(--rule); color: var(--text); text-decoration: none; font-size: 15.5px; }
+.news-link span:last-child { font-family: var(--mono); font-size: 15px; color: var(--ember); white-space: nowrap; }
+.news-link:hover span:first-child { text-decoration: underline; }
 
 /* игра */
 .game { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 32px; align-items: start; }
-.game .info { display: grid; gap: 16px; }
-.facts { font-family: var(--mono); font-size: 14px; color: var(--text-dim); display: grid; gap: 4px; }
+.game .info { display: grid; gap: 16px; min-width: 0; }
+.facts { font-family: var(--mono); font-size: 15px; color: var(--text-dim); display: grid; gap: 4px; }
 .facts b { color: var(--text); font-weight: 400; }
 .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .shots img { border: 1px solid var(--rule); width: 100%; height: auto; }
-.shots figure { margin: 0; display: grid; gap: 4px; }
-.shots figcaption { font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
-.install { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 15.5px; }
+.shots figure { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.shots figcaption { font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
+.install { margin: 0; padding-left: 22px; display: grid; gap: 6px; font-size: 16px; }
 .install li::marker { font-family: var(--mono); color: var(--ember); }
-.keys { width: 100%; min-width: 0; font-size: 15px; }
-.keys td { padding: 6px 8px 6px 0; }
+.install li.if { color: var(--text-dim); }
+.install li.if::marker { content: "!  "; color: var(--stamp); font-weight: 700; }
+.keys { width: 100%; border-collapse: collapse; font-size: 15px; }
+.keys td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
 .keys td:first-child { font-family: var(--mono); color: var(--ember); white-space: nowrap; width: 1%; }
+
+/* вопросы */
+.faq { max-width: 860px; border-top: 1px solid var(--rule); }
+.faq details { border-bottom: 1px solid var(--rule); }
+.faq summary { min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; cursor: pointer; list-style: none; font-family: var(--display); font-weight: 700; font-size: clamp(19px, 2.2vw, 22px); line-height: 1.25; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex: none; width: 28px; text-align: center; font-family: var(--mono); font-weight: 400; font-size: 26px; color: var(--ember); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq .a { margin: 0; padding: 0 40px 18px 0; color: var(--text-dim); max-width: 70ch; }
 
 /* правила */
 .rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 36px; list-style: none; margin: 0; padding: 0; }
-.rules li { padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; }
+.rules li { padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; min-width: 0; }
 .rules b { font-family: var(--display); font-size: 20px; }
-.rules span { color: var(--text-dim); font-size: 15.5px; }
+.rules span { color: var(--text-dim); font-size: 16px; }
 
-footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-block: 26px 40px; font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); }
+/* поделиться */
+.share { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; border: 1px solid var(--rule); background: var(--ground-2); padding: 22px 24px; }
+.share p { margin: 0; font-family: var(--display); font-size: clamp(21px, 2.6vw, 26px); font-weight: 700; line-height: 1.25; }
+.share .act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.share .status { font-family: var(--mono); font-size: 15px; color: var(--ember); }
+
+footer { margin-top: 72px; border-top: 1px solid var(--rule); padding-block: 26px 40px; font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+/* нижняя панель на телефоне */
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 1px; background: var(--rule); border-top: 1px solid var(--rule); padding-bottom: env(safe-area-inset-bottom, 0px); transform: translateY(110%); transition: transform .25s ease; }
+.bar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: var(--bar-h); padding: 6px 4px; background: rgba(15,12,10,0.97); color: var(--text); text-decoration: none; font-family: var(--mono); font-size: 15px; line-height: 1.15; text-align: center; }
+.bar a.main { background: var(--ember); color: var(--ground); }
+.bar svg { width: 22px; height: 22px; flex: none; }
+.bar.show { transform: none; }
+body.typing .bar { transform: translateY(110%); }
 
 @media (max-width: 900px) {
   .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ranks, .catalog, .builder, .game, .rules { grid-template-columns: minmax(0, 1fr); }
+  .ranks, .catalog, .builder, .game, .rules, .shtab { grid-template-columns: minmax(0, 1fr); }
   .pass.top { transform: none; }
   .order { position: relative; top: 0; }
+}
+@media (max-width: 760px) {
+  .bar { display: grid; }
+  body { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px)); }
+  footer { margin-top: 48px; }
 }
 @media (max-width: 480px) {
   .steps { grid-template-columns: minmax(0, 1fr); }
   body { font-size: 16px; }
+  section { padding-block: 52px 8px; }
+  .hero .wrap { padding-block: 96px 40px; }
+  .hero .actions .btn { flex: 1 1 100%; }
   .order { padding: 24px 18px; }
   .order .row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .order .bottom .btn { flex: 1 1 100%; }
+  .wire, .pass { padding: 24px 18px 20px; }
+  .share { padding: 20px 18px; }
+  .share .act, .share .act .btn { width: 100%; }
+  .faq .a { padding-right: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .stamp.on { animation: none; }
+  .bar { transition: none; }
+  .faq summary::after { transition: none; }
 }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <img src="img/07_vyhod.jpg" alt="Конец потерны: в проёме выхода холодный дневной свет, на его фоне силуэт отравленного в противогазе" width="1280" height="680">
+  <img src="img/07_vyhod.jpg" alt="Конец потерны: в проёме выхода холодный дневной свет, на его фоне силуэт отравленного в противогазе" width="1280" height="680" fetchpriority="high">
   <div class="wrap">
     <p class="kicker" id="season-line">Сезон I · с 1 ноября 2026</p>
     <h1>Мастерская Каземата</h1>
     <p class="lead">КАЗЕМАТ - хоррор про русский форт в 1915 году: газ, лампа, наган и твари в противогазах. Игру мы делаем вместе. Получи звание, отдай до трёх приказов, и твои изменения войдут в следующую версию игры, а позывной навсегда останется в её летописи</p>
-    <div class="actions">
+    <div class="actions" id="hero-actions">
       <a class="btn solid" href="#prikaz">Составить приказ</a>
       <a class="btn" href="#igra">Скачать игру</a>
+      <a class="btn tg" id="hero-tg" href="#shtab" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.8c-.8.3-.8 1.4 0 1.7l4.6 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.5 4.8 3.5c.6.4 1.4.1 1.6-.6L22.9 5c.2-1-.6-1.8-1.4-1.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9.2 14.1 8.6-6.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Штаб в Telegram</a>
     </div>
     <div class="seats" aria-live="polite">
-      <span>Мест в гарнизоне: свободно <b id="seats-free">12</b> из <b id="seats-total">12</b></span>
+      <span id="seats-text">Свободно <b>12</b> мест из <b>12</b></span>
       <div class="seat-row" id="seat-row" aria-hidden="true"></div>
     </div>
   </div>
@@ -222,6 +314,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <p class="intro">Один приказ - одно небольшое изменение. Крупное изменение, например новая комната или новый монстр, стоит два приказа</p>
       <div class="ranks" id="ranks"></div>
       <p class="note">Больше трёх приказов на одного участника в сезоне не бывает, даже за доплату. Так у всех равные шансы, а игра не превращается в чью-то одну</p>
+      <p class="note" id="ranks-seats"></p>
     </div>
   </section>
 
@@ -251,25 +344,30 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       <p class="intro">Заполни поля, и приказ соберётся на бумаге. Нажми «Скопировать» и отправь текст организатору вместе с подтверждением оплаты</p>
       <div class="builder">
         <form id="order-form" novalidate>
-          <label for="f-callsign">Позывной (не настоящее имя)
-            <input type="text" id="f-callsign" maxlength="24" placeholder="Например: Ворон" autocomplete="off">
+          <label for="f-callsign">Позывной
+            <input type="text" id="f-callsign" maxlength="24" placeholder="Например: Ворон" autocomplete="off" aria-describedby="h-callsign">
+            <span class="hint" id="h-callsign">Прозвище для доски и летописи. Настоящее имя не пиши</span>
           </label>
           <label for="f-rank">Звание
-            <select id="f-rank"></select>
+            <select id="f-rank" aria-describedby="h-rank"></select>
+            <span class="hint" id="h-rank">Не знаешь, какое взять? Выбери изменение, звание подскажем</span>
           </label>
           <label for="f-type">Что меняем
-            <select id="f-type"></select>
+            <select id="f-type" aria-describedby="h-type"></select>
+            <span class="hint" id="h-type"></span>
           </label>
           <label for="f-place">Где в игре
-            <select id="f-place">
+            <select id="f-place" aria-describedby="h-place">
               <option>Лазарет</option><option>Казарма</option><option>Кабинет коменданта</option><option>Галерея с газом</option><option>Пороховой погреб</option><option>Потерна и выход</option><option>Вся игра</option><option>Новое место</option>
             </select>
+            <span class="hint" id="h-place">Комнаты названы как в игре. Для своей комнаты выбери «Новое место»</span>
           </label>
           <label for="f-text">Суть приказа
-            <textarea id="f-text" maxlength="600" placeholder="Например: в пороховом погребе за ящиками сидит отравленный, который выползает, только когда лампа погашена"></textarea>
+            <textarea id="f-text" maxlength="600" placeholder="Например: в пороховом погребе за ящиками сидит отравленный, который выползает, только когда лампа погашена" aria-describedby="h-text"></textarea>
+            <span class="count" id="h-text">0 из 600</span>
           </label>
           <label class="check" for="f-parent"><input type="checkbox" id="f-parent"> Родители знают о взносе и согласны</label>
-          <p class="warn" id="warn" role="status"></p>
+          <div class="warn" id="warn" role="status"></div>
         </form>
         <div class="order" id="order" aria-live="polite">
           <h3>Приказъ по гарнизону</h3>
@@ -282,6 +380,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           <div class="row"><span>Родители</span><span id="o-parent" class="empty">не отмечено</span></div>
           <div class="bottom">
             <button class="btn" type="button" id="copy">Скопировать приказ</button>
+            <button class="btn" type="button" id="send" hidden>Отправить</button>
             <span class="copied" id="copied" role="status"></span>
           </div>
           <div class="stamp" id="stamp" aria-hidden="true">ГОТОВЪ</div>
@@ -307,6 +406,30 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
     </div>
   </section>
 
+  <section id="shtab" hidden>
+    <div class="wrap">
+      <p class="kicker">Штаб в Telegram</p>
+      <h2>Сводки из штаба</h2>
+      <div class="shtab" id="shtab-grid">
+        <article class="wire" id="tg-pitch" hidden>
+          <div class="doc"><span>Телеграмма</span><span>Срочно</span></div>
+          <h3>Гарнизону Каземата</h3>
+          <ul class="reasons">
+            <li><span class="tape">Приказ принят тчк версия вышла тчк</span><p>Каждый приказ, каждый новый боец и каждая версия игры приходят туда сразу, уведомлением на телефон</p></li>
+            <li><span class="tape">Голосуем за следующего монстра</span><p>Какая тварь выползет в каземат следующей, решаем вместе голосованием в канале</p></li>
+            <li><span class="tape">Закулисье мастерской</span><p>Как собирается игра: черновики комнат и монстров, скриншоты и звуки до выхода версии</p></li>
+          </ul>
+          <a class="btn solid" id="tg-join" href="#shtab" target="_blank" rel="noopener">Подписаться на штаб</a>
+          <p class="who" id="tg-name"></p>
+        </article>
+        <div class="news" id="news" hidden>
+          <h3>Последние сводки</h3>
+          <div class="news-list" id="news-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="igra">
     <div class="wrap">
       <p class="kicker">Игра</p>
@@ -315,8 +438,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
         <div class="info">
           <p style="margin:0">Пройди каземат сам, тогда будет понятно, что в нём хочется поменять. Цель: найти ключ коменданта, отпереть потерну и выйти к свету. Игра для телефона, скачать её можно только здесь</p>
           <div class="facts" id="facts">
-            <span>Версия <b id="g-version">1.0</b> · <b id="g-date">1 ноября 2026</b></span>
-            <span>Android 8 и новее<span id="g-size"></span></span>
+            <span>Версия <b id="g-version">1.0.1</b> · <b id="g-date">1 ноября 2026</b></span>
+            <span>Android 7 и новее<span id="g-size"> · 66 МБ</span></span>
           </div>
           <div><a class="btn solid" id="g-download" href="https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk">Скачать для Android</a></div>
           <ol class="install">
@@ -324,6 +447,7 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
             <li>Телефон спросит, можно ли ставить приложения из браузера. Открой настройки и разреши</li>
             <li>Нажми «Установить». Если Play Защита предупредит про неизвестного разработчика, выбери «Всё равно установить»</li>
             <li>Найди на экране значок КАЗЕМАТ. Играть лучше в наушниках и с выключенным светом</li>
+            <li class="if">Если пишет «Приложение не установлено», удали старую версию КАЗЕМАТ, если она есть, и проверь, что на телефоне свободно 300 МБ. На Samsung может мешать «Автоблокировщик»: Настройки - Безопасность - Автоблокировщик, выключи его на время установки</li>
           </ol>
           <p class="note" style="margin:0">На iPhone игру поставить нельзя: Apple разрешает устанавливать игры только из App Store</p>
           <table class="keys">
@@ -335,11 +459,26 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
           </table>
         </div>
         <div class="shots">
-          <figure><img src="img/01_lazaret.jpg" alt="Лазарет: кирпичные своды, лампа" width="1280" height="680" loading="lazy"><figcaption>Лазарет</figcaption></figure>
-          <figure><img src="img/03_galereya_gaz.jpg" alt="Бетонная галерея и облако газа" width="1280" height="680" loading="lazy"><figcaption>Галерея с газом</figcaption></figure>
-          <figure><img src="img/05_monstr.jpg" alt="Отравленный в противогазе" width="1280" height="680" loading="lazy"><figcaption>Отравленный</figcaption></figure>
-          <figure><img src="img/06_dver.jpg" alt="Железная дверь потерны" width="1280" height="680" loading="lazy"><figcaption>Потерна № 2</figcaption></figure>
+          <figure><img src="img/01_lazaret.jpg" alt="Лазарет: кирпичные своды, лампа" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Лазарет</figcaption></figure>
+          <figure><img src="img/03_galereya_gaz.jpg" alt="Бетонная галерея и облако газа" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Галерея с газом</figcaption></figure>
+          <figure><img src="img/05_monstr.jpg" alt="Отравленный в противогазе" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Отравленный</figcaption></figure>
+          <figure><img src="img/06_dver.jpg" alt="Железная дверь потерны" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Потерна № 2</figcaption></figure>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="voprosy">
+    <div class="wrap">
+      <p class="kicker">Вопросы</p>
+      <h2>Коротко о главном</h2>
+      <div class="faq">
+        <details><summary>Сколько это стоит?</summary><p class="a" id="faq-price">Игра бесплатная. Платный только пропуск в гарнизон: Рядовой 150 ₽ за 1 приказ, Унтер-офицер 300 ₽ за 2, Офицер 450 ₽ за 3. Больше 3 приказов на участника за сезон не бывает, даже за доплату</p></details>
+        <details><summary>Как заплатить?</summary><p class="a">Сначала составь приказ и отправь его организатору. Реквизиты он пришлёт лично. Переводит родитель или ты с его разрешения, деньги получает взрослый организатор</p></details>
+        <details><summary>А если приказ не примут?</summary><p class="a">Организатор объяснит, что не так, и приказ можно переписать. Если выполнить его не получится совсем, вернётся его часть взноса</p></details>
+        <details><summary>Когда изменение появится в игре?</summary><p class="a">Ответ на приказ обычно приходит за 1-3 дня. Принятый приказ входит в следующую версию игры, скачать её можно здесь же</p></details>
+        <details><summary>Можно играть на iPhone?</summary><p class="a">Нет, только на Android 7 и новее. Apple разрешает ставить игры только из App Store, а КАЗЕМАТ скачивается с этого сайта</p></details>
+        <details><summary>Слишком темно, ничего не видно</summary><p class="a">Темнота задумана, но её можно подстроить: в меню и на паузе есть ползунок «Яркость»</p></details>
       </div>
     </div>
   </section>
@@ -358,6 +497,18 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       </ul>
     </div>
   </section>
+
+  <section id="podelitsya">
+    <div class="wrap">
+      <div class="share">
+        <p>Знаешь, кому понравится КАЗЕМАТ? Отправь ему ссылку</p>
+        <div class="act">
+          <button class="btn" type="button" id="share">Поделиться ссылкой</button>
+          <span class="status" id="share-status" role="status"></span>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -367,38 +518,49 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   </div>
 </footer>
 
+<nav class="bar" id="bar" aria-label="Быстрые действия">
+  <a class="main" href="#prikaz"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M15 3v4h4 M9 12h7 M9 16h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>Приказ</a>
+  <a id="bar-tg" href="#shtab" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.5 2.8 10.8c-.8.3-.8 1.4 0 1.7l4.6 1.6 1.8 5.6c.2.7 1.1.9 1.6.4l2.6-2.5 4.8 3.5c.6.4 1.4.1 1.6-.6L22.9 5c.2-1-.6-1.8-1.4-1.5Z M9.2 14.1l8.6-6.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>Канал</a>
+  <a href="#igra"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12 M7 10l5 5 5-5 M5 20h14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>Скачать</a>
+</nav>
+
 <script type="application/json" id="fallback">
-{"season":{"name":"Сезон I","started":"2026-11-01","seats":12},"ranks":[{"id":"ryadovoy","name":"Рядовой","price":150,"orders":1,"perks":["1 приказ: одно небольшое изменение в игре","Позывной в летописи игры"]},{"id":"unter","name":"Унтер-офицер","price":300,"orders":2,"perks":["2 приказа: два небольших или одно крупное изменение","Позывной в летописи и в титрах игры"]},{"id":"ofitser","name":"Офицер","price":450,"orders":3,"perks":["3 приказа, это максимум на сезон","Позывной в летописи и в титрах игры","Твой позывной краской на стене каземата","Голос при выборе темы следующего сезона"]}],"game":{"version":"1.0","date":"2026-11-01","size_mb":0,"download":"https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk"},"garrison":[],"orders":[]}
+{"season":{"name":"Сезон I","started":"2026-11-01","seats":12},"telegram":{"url":"https://t.me/masterskayagames","name":"Мастерская ИГРы. Каземат"},"ranks":[{"id":"ryadovoy","name":"Рядовой","price":150,"orders":1,"perks":["1 приказ: одно небольшое изменение в игре","Позывной в летописи игры"]},{"id":"unter","name":"Унтер-офицер","price":300,"orders":2,"perks":["2 приказа: два небольших или одно крупное изменение","Позывной в летописи и в титрах игры"]},{"id":"ofitser","name":"Офицер","price":450,"orders":3,"perks":["3 приказа, это максимум на сезон","Позывной в летописи и в титрах игры","Твой позывной краской на стене каземата","Голос при выборе темы следующего сезона"]}],"catalog":[{"id":"note","name":"Надпись или записка","cost":1,"desc":"Твой текст на стене, записка солдата, плакат","tip":"Напиши сам текст и где он висит. Короткие надписи читаются лучше"},{"id":"prop","name":"Предмет в комнату","cost":1,"desc":"Ящик, бочка, оружейная стойка, полевой телефон","tip":"Что за предмет и где стоит. Можно ли его взять или сдвинуть"},{"id":"rule","name":"Правило игры","cost":1,"desc":"Больше патронов, быстрее монстры, ярче лампа. В разумных пределах","tip":"Что изменить и насколько. Например: лампа светит вдвое дальше"},{"id":"sound","name":"Звук или музыка","cost":1,"desc":"Новый звук или настроение музыки в определённом месте","tip":"Какой звук, где и когда он звучит. Можно сравнить с чем-то знакомым"},{"id":"egg","name":"Пасхалка","cost":1,"desc":"Секрет, который найдёт только внимательный","tip":"Что спрятано и как его найти. Суть пасхалки на доске и в канале не показываем, пусть ищут"},{"id":"room","name":"Новая комната","cost":2,"desc":"Комната или проход по твоему замыслу","tip":"Что за комната, откуда в неё вход и что внутри"},{"id":"monster","name":"Новый монстр","cost":2,"desc":"Другой вид отравленного: внешность и повадки","tip":"Как выглядит, как двигается, где прячется и чего боится"},{"id":"weapon","name":"Оружие или снаряжение","cost":2,"desc":"Винтовка, граната, противогаз от газа","tip":"Что это, где его найти и чем оно отличается от нагана"},{"id":"mech","name":"Новая механика","cost":2,"desc":"Например, запирать двери или прятаться в шкафу","tip":"Что делает игрок и что от этого меняется в игре"},{"id":"other","name":"Другое","cost":0,"desc":"","tip":"Опиши идею как можешь. Организатор скажет, сколько приказов она стоит"}],"game":{"version":"1.0.1","date":"2026-11-01","size_mb":66,"download":"https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk"},"garrison":[],"orders":[]}
 </script>
 <script>
 (function () {
-  var CATALOG = [
-    {id: "note", name: "Надпись или записка", cost: 1, desc: "Твой текст на стене, записка солдата, плакат"},
-    {id: "prop", name: "Предмет в комнату", cost: 1, desc: "Ящик, бочка, оружейная стойка, полевой телефон"},
-    {id: "rule", name: "Правило игры", cost: 1, desc: "Больше патронов, быстрее монстры, ярче лампа. В разумных пределах"},
-    {id: "sound", name: "Звук или музыка", cost: 1, desc: "Новый звук или настроение музыки в определённом месте"},
-    {id: "egg", name: "Пасхалка", cost: 1, desc: "Секрет, который найдёт только внимательный"},
-    {id: "room", name: "Новая комната", cost: 2, desc: "Комната или проход по твоему замыслу"},
-    {id: "monster", name: "Новый монстр", cost: 2, desc: "Другой вид отравленного: внешность и повадки"},
-    {id: "weapon", name: "Оружие или снаряжение", cost: 2, desc: "Винтовка, граната, противогаз от газа"},
-    {id: "mech", name: "Новая механика", cost: 2, desc: "Например, запирать двери или прятаться в шкафу"},
-    {id: "other", name: "Другое", cost: 0, desc: ""}
-  ];
+  "use strict";
   var STATUS = {review: "На рассмотрении", accepted: "Принят", done: "В игре", returned: "Возвращён"};
   var MONTHS = ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];
+  var TG_WIDGET = "https://telegram.org/js/telegram-widget.js?22";
+  var SHARE_TEXT = "КАЗЕМАТ - хоррор про форт 1915 года, который делают сами игроки";
   var data = JSON.parse(document.getElementById("fallback").textContent);
+  var news = {channel: "", posts: []};
 
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
-  function ordersWord(n) { return n === 1 ? "приказ" : (n >= 2 && n <= 4 ? "приказа" : "приказов"); }
-  function ruDate(iso) { var p = (iso || "").split("-"); if (p.length !== 3) return iso || ""; return (+p[2]) + " " + MONTHS[(+p[1]) - 1] + " " + p[0]; }
+  function plural(n, f) { var a = Math.abs(n) % 100, b = a % 10; if (a > 10 && a < 20) return f[2]; if (b === 1) return f[0]; if (b >= 2 && b <= 4) return f[1]; return f[2]; }
+  function ordersWord(n) { return plural(n, ["приказ", "приказа", "приказов"]); }
+  function seatsWord(n) { return plural(n, ["место", "места", "мест"]); }
+  function ruDate(iso, noYear) { var p = (iso || "").split("-"); if (p.length !== 3) return iso || ""; return (+p[2]) + " " + MONTHS[(+p[1]) - 1] + (noYear ? "" : " " + p[0]); }
+  function catalog() { return data.catalog || []; }
+  function seatInfo() { var total = +((data.season || {}).seats) || 12, taken = (data.garrison || []).length; return {total: total, taken: taken, free: Math.max(total - taken, 0)}; }
+
+  function seatsLine(box) {
+    var s = seatInfo(); box.textContent = "";
+    if (!s.free) { box.appendChild(document.createTextNode("Все " + s.total + " " + seatsWord(s.total) + " в гарнизоне заняты")); return; }
+    box.appendChild(document.createTextNode("Свободно "));
+    box.appendChild(el("b", null, String(s.free)));
+    box.appendChild(document.createTextNode(" " + seatsWord(s.free) + " из "));
+    box.appendChild(el("b", null, String(s.total)));
+  }
 
   function renderSeats() {
-    var total = data.season.seats || 12, taken = (data.garrison || []).length;
-    $("seats-free").textContent = Math.max(total - taken, 0);
-    $("seats-total").textContent = total;
+    var s = seatInfo();
+    seatsLine($("seats-text"));
     var row = $("seat-row"); row.textContent = "";
-    for (var i = 0; i < total; i++) row.appendChild(el("span", "seat" + (i < taken ? " taken" : "")));
+    for (var i = 0; i < s.total; i++) row.appendChild(el("span", "seat" + (i < s.taken ? " taken" : "")));
+    var rs = $("ranks-seats"); seatsLine(rs); rs.appendChild(document.createTextNode(" · " + data.season.name));
     $("season-line").textContent = data.season.name + " · с " + ruDate(data.season.started);
     $("o-season").textContent = data.season.name;
   }
@@ -415,23 +577,33 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       for (var k = 0; k < r.orders; k++) seals.appendChild(el("span", "seal"));
       seals.appendChild(el("span", null, r.orders + " " + ordersWord(r.orders)));
       p.appendChild(seals);
-      var ul = el("ul"); r.perks.forEach(function (t) { ul.appendChild(el("li", null, t)); }); p.appendChild(ul);
+      var ul = el("ul"); (r.perks || []).forEach(function (t) { ul.appendChild(el("li", null, t)); }); p.appendChild(ul);
       box.appendChild(p);
     });
     var sel = $("f-rank"), keep = sel.value; sel.textContent = "";
-    data.ranks.forEach(function (r) { var o = el("option", null, r.name + " · " + r.orders + " " + ordersWord(r.orders) + " · " + r.price + " ₽"); o.value = r.id; sel.appendChild(o); });
+    data.ranks.forEach(function (r) { var o = el("option", null, r.name + " · " + r.price + " ₽"); o.value = r.id; sel.appendChild(o); });
     if (keep) sel.value = keep;
+    var max = Math.max.apply(null, data.ranks.map(function (r) { return r.orders; }));
+    $("faq-price").textContent = "Игра бесплатная. Платный только пропуск в гарнизон: " +
+      data.ranks.map(function (r) { return r.name + " " + r.price + " ₽ за " + r.orders + " " + ordersWord(r.orders); }).join(", ") +
+      ". Больше " + max + " " + plural(max, ["приказа", "приказов", "приказов"]) + " на участника за сезон не бывает, даже за доплату";
   }
 
   function renderCatalog() {
     ["cat-small", "cat-big"].forEach(function (id, idx) {
       var dl = $(id); dl.textContent = "";
-      CATALOG.filter(function (c) { return c.cost === idx + 1; }).forEach(function (c) { dl.appendChild(el("dt", null, c.name)); dl.appendChild(el("dd", null, c.desc)); });
+      catalog().filter(function (c) { return c.cost === idx + 1; }).forEach(function (c) { dl.appendChild(el("dt", null, c.name)); dl.appendChild(el("dd", null, c.desc)); });
     });
-    var sel = $("f-type"); sel.textContent = "";
-    CATALOG.forEach(function (c) {
-      var o = el("option", null, c.cost ? c.name + " · " + c.cost + " " + ordersWord(c.cost) : "Другое · цену назовёт организатор"); o.value = c.id; sel.appendChild(o);
+    var sel = $("f-type"), keep = sel.value; sel.textContent = "";
+    var costs = catalog().map(function (c) { return +c.cost || 0; }).filter(function (c, i, a) { return a.indexOf(c) === i; })
+      .sort(function (a, b) { return (a || 99) - (b || 99); });
+    costs.forEach(function (cost) {
+      var og = document.createElement("optgroup");
+      og.label = cost ? (cost === 1 ? "Небольшие" : "Крупные") + " · " + cost + " " + ordersWord(cost) : "Цену назовёт организатор";
+      catalog().filter(function (c) { return (+c.cost || 0) === cost; }).forEach(function (c) { var o = el("option", null, c.name); o.value = c.id; og.appendChild(o); });
+      sel.appendChild(og);
     });
+    if (keep) sel.value = keep;
   }
 
   function renderBoard() {
@@ -448,13 +620,19 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       var c = el("article", "card");
       var h = el("div", "head"); h.appendChild(el("span", null, "Приказ № " + o.n)); h.appendChild(el("span", null, o.place || "")); c.appendChild(h);
       c.appendChild(el("b", null, o.type + (o.cost ? " · " + o.cost + " " + ordersWord(o.cost) : "")));
-      if (o.text) c.appendChild(el("p", null, o.text));
+      if (o.secret) c.appendChild(el("p", "secret", "Суть держим в секрете, пусть ищут"));
+      else if (o.text) c.appendChild(el("p", null, o.text));
       c.appendChild(el("p", null, "Позывной: " + o.callsign));
       var st = o.status in STATUS ? o.status : "review";
       c.appendChild(el("span", "badge " + st, STATUS[st] + (st === "done" && o.version ? " v" + o.version : "")));
       grid.appendChild(c);
     });
     box.appendChild(grid);
+  }
+
+  function usedBy(callsign) {
+    return (data.orders || []).filter(function (o) { return o.callsign === callsign && o.status !== "returned"; })
+      .reduce(function (s, o) { return s + (+o.cost || 0); }, 0);
   }
 
   function renderGarrison() {
@@ -466,16 +644,71 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       e.appendChild(el("span", null, "Здесь появятся позывные участников и сколько приказов у каждого осталось"));
       box.appendChild(e); return;
     }
-    var wrap = el("div", "table-wrap"), t = el("table"), head = el("tr");
-    ["Позывной", "Звание", "Приказов отдано", "Осталось"].forEach(function (s) { head.appendChild(el("th", null, s)); });
-    t.appendChild(head);
+    var grid = el("div", "garrison");
     g.forEach(function (m) {
-      var tr = el("tr");
-      tr.appendChild(el("td", null, m.callsign)); tr.appendChild(el("td", null, m.rank));
-      tr.appendChild(el("td", "num", (m.used || 0) + " из " + m.orders)); tr.appendChild(el("td", "num", String(Math.max(m.orders - (m.used || 0), 0))));
-      t.appendChild(tr);
+      var total = +m.orders || 0, used = Math.min((data.orders || []).length ? usedBy(m.callsign) : (+m.used || 0), total);
+      var t = el("article", "token");
+      t.appendChild(el("b", null, m.callsign));
+      t.appendChild(el("span", "rank", m.rank));
+      var left = el("div", "left");
+      for (var i = 0; i < total; i++) left.appendChild(el("span", "pip" + (i < used ? " used" : "")));
+      left.appendChild(el("span", null, "отдано " + used + " из " + total));
+      t.appendChild(left);
+      grid.appendChild(t);
     });
-    wrap.appendChild(t); box.appendChild(wrap);
+    box.appendChild(grid);
+  }
+
+  function tgInfo() {
+    var t = data.telegram || {}, url = String(t.url || "").trim().replace(/\/+$/, "");
+    var m = /^https:\/\/t\.me\/(\+?[A-Za-z0-9_-]{4,64})$/.exec(url);
+    if (!m) return null;
+    return {url: url, name: String(t.name || "").trim(), handle: m[1].charAt(0) === "+" ? "" : "@" + m[1]};
+  }
+
+  function newsPosts() {
+    var ch = String(news.channel || "");
+    if (!/^[A-Za-z0-9_]{4,32}$/.test(ch)) return [];
+    return (news.posts || []).filter(function (p) { return p && /^\d+$/.test(String(p.id)); })
+      .sort(function (a, b) { return b.id - a.id; }).slice(0, 4);
+  }
+
+  var newsLoaded = false;
+  function loadWidgets() {
+    if (newsLoaded) return; newsLoaded = true;
+    Array.prototype.forEach.call(document.querySelectorAll(".news-item[data-post]"), function (item) {
+      var s = document.createElement("script");
+      s.async = true; s.src = TG_WIDGET;
+      s.setAttribute("data-telegram-post", item.getAttribute("data-post"));
+      s.setAttribute("data-width", "100%");
+      s.setAttribute("data-dark", "1");
+      s.setAttribute("data-color", "D48B3A");
+      s.setAttribute("data-dark-color", "D48B3A");
+      item.insertBefore(s, item.firstChild);
+    });
+  }
+
+  function renderTelegram() {
+    var tg = tgInfo(), posts = newsPosts();
+    ["hero-tg", "bar-tg", "tg-join"].forEach(function (id) { var a = $(id); if (tg) a.href = tg.url; });
+    $("hero-tg").hidden = !tg; $("bar-tg").hidden = !tg; $("tg-pitch").hidden = !tg;
+    $("tg-name").textContent = tg ? [tg.name ? "Канал «" + tg.name + "»" : "Канал в Telegram", tg.handle].filter(Boolean).join(" · ") : "";
+    var list = $("news-list"); list.textContent = ""; newsLoaded = false;
+    posts.forEach(function (p) {
+      var item = el("div", "news-item"); item.setAttribute("data-post", news.channel + "/" + p.id);
+      var a = el("a", "news-link"); a.href = "https://t.me/" + news.channel + "/" + p.id; a.target = "_blank"; a.rel = "noopener";
+      a.appendChild(el("span", null, p.title || "Сводка № " + p.id));
+      a.appendChild(el("span", null, (p.date ? ruDate(p.date, true) + " · " : "") + "в Telegram ↗"));
+      item.appendChild(a); list.appendChild(item);
+    });
+    $("news").hidden = !posts.length;
+    $("shtab").hidden = !tg && !posts.length;
+    $("shtab-grid").classList.toggle("solo", !tg || !posts.length);
+    if (!posts.length) return;
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (en) { if (en.some(function (e) { return e.isIntersecting; })) { io.disconnect(); loadWidgets(); } }, {rootMargin: "600px 0px"});
+      io.observe($("news"));
+    } else { loadWidgets(); }
   }
 
   function renderGame() {
@@ -488,25 +721,47 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
   function currentOrder() {
     var rank = data.ranks.filter(function (r) { return r.id === $("f-rank").value; })[0] || data.ranks[0];
-    var type = CATALOG.filter(function (c) { return c.id === $("f-type").value; })[0] || CATALOG[0];
+    var type = catalog().filter(function (c) { return c.id === $("f-type").value; })[0] || catalog()[0];
     return {
       callsign: $("f-callsign").value.trim(), rank: rank, type: type,
       place: $("f-place").value, text: $("f-text").value.trim(), parent: $("f-parent").checked
     };
   }
 
+  function typeLabel(t) { return t.cost ? t.name + " (" + t.cost + " " + ordersWord(t.cost) + ")" : t.name + " (цену назовёт организатор)"; }
+
+  function setWarn(text, fixRank) {
+    var w = $("warn"); w.textContent = "";
+    if (!text) return;
+    w.appendChild(el("span", null, text));
+    if (fixRank) {
+      var b = el("button", "btn", "Взять звание «" + fixRank.name + "»"); b.type = "button";
+      b.addEventListener("click", function () { $("f-rank").value = fixRank.id; updateOrder(); $("f-rank").focus(); });
+      w.appendChild(b);
+    }
+  }
+
+  function rankFor(cost) { return data.ranks.filter(function (r) { return r.orders >= cost; })[0]; }
+
   function updateOrder() {
     var o = currentOrder();
     function put(id, value, empty) { var n = $(id); n.textContent = value || empty; n.className = value ? "" : "empty"; }
     put("o-callsign", o.callsign, "не указан");
     put("o-rank", o.rank.name + " (" + o.rank.orders + " " + ordersWord(o.rank.orders) + ")", "");
-    put("o-type", o.type.cost ? o.type.name + " (" + o.type.cost + " " + ordersWord(o.type.cost) + ")" : "Другое (цену назовёт организатор)", "");
+    put("o-type", typeLabel(o.type), "");
     put("o-place", o.place, "");
     put("o-text", o.text, "опиши, что изменить");
     put("o-parent", o.parent ? "знают и согласны" : "", "не отмечено");
-    var warn = "";
-    if (o.type.cost > o.rank.orders) warn = "Это изменение стоит " + o.type.cost + " " + ordersWord(o.type.cost) + ", а у звания «" + o.rank.name + "» их " + o.rank.orders + ". Выбери звание выше";
-    $("warn").textContent = warn;
+    var hr = $("h-rank"); hr.textContent = "";
+    hr.appendChild(el("b", null, o.rank.orders + " " + ordersWord(o.rank.orders) + " на сезон"));
+    hr.appendChild(document.createTextNode(" · Не знаешь, какое взять? Выбери изменение, звание подскажем"));
+    var h = $("h-type"); h.textContent = "";
+    h.appendChild(el("b", null, o.type.cost ? "Стоит " + o.type.cost + " " + ordersWord(o.type.cost) : "Цену назовёт организатор"));
+    if (o.type.tip) h.appendChild(document.createTextNode(" · " + o.type.tip));
+    $("h-text").textContent = $("f-text").value.length + " из 600";
+    if (o.type.cost > o.rank.orders) {
+      setWarn("Это изменение стоит " + o.type.cost + " " + ordersWord(o.type.cost) + ", а у звания «" + o.rank.name + "» " + (o.rank.orders === 1 ? "только 1" : o.rank.orders), rankFor(o.type.cost));
+    } else { setWarn(""); }
     $("stamp").classList.remove("on");
     $("copied").textContent = "";
   }
@@ -516,47 +771,101 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
       "ПРИКАЗ ПО ГАРНИЗОНУ КАЗЕМАТА · " + data.season.name,
       "Позывной: " + o.callsign,
       "Звание: " + o.rank.name + " (" + o.rank.orders + " " + ordersWord(o.rank.orders) + ", " + o.rank.price + " ₽)",
-      "Изменение: " + (o.type.cost ? o.type.name + " (" + o.type.cost + " " + ordersWord(o.type.cost) + ")" : "Другое"),
+      "Изменение: " + (o.type.cost ? o.type.name + " (" + o.type.cost + " " + ordersWord(o.type.cost) + ")" : o.type.name),
       "Где: " + o.place,
       "Суть: " + o.text,
       "Родители знают о взносе: " + (o.parent ? "да" : "нет")
     ].join("\n");
   }
 
-  function copyOrder() {
-    var o = currentOrder(), problem = "";
-    if (!o.callsign) problem = "Впиши позывной";
-    else if (o.text.length < 10) problem = "Опиши суть приказа хотя бы одной фразой";
-    else if (!o.parent) problem = "Отметь, что родители знают о взносе";
-    else if (o.type.cost > o.rank.orders) problem = "Для этого изменения нужно звание выше";
-    if (problem) { $("warn").textContent = problem; return; }
-    var text = orderText(o);
-    function done(ok) {
-      $("copied").textContent = ok ? "Скопировано. Отправь организатору" : "Выдели текст приказа и скопируй вручную";
-      if (ok) { var s = $("stamp"); s.classList.remove("on"); void s.offsetWidth; s.classList.add("on"); }
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallbackCopy(text); });
-    } else { fallbackCopy(text); }
-    function fallbackCopy(t) {
-      var ta = document.createElement("textarea"); ta.value = t; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
-      document.body.removeChild(ta); done(ok);
-    }
+  function checkOrder(o) {
+    if (!o.callsign) return ["Впиши позывной", "f-callsign"];
+    if (o.text.length < 10) return ["Опиши суть приказа хотя бы одной фразой", "f-text"];
+    if (!o.parent) return ["Отметь, что родители знают о взносе", "f-parent"];
+    if (o.type.cost > o.rank.orders) return ["Для этого изменения нужно звание выше", "f-rank"];
+    return null;
   }
 
-  function renderAll() { renderSeats(); renderRanks(); renderBoard(); renderGarrison(); renderGame(); updateOrder(); }
+  function slam() { var s = $("stamp"); s.classList.remove("on"); void s.offsetWidth; s.classList.add("on"); }
 
-  renderCatalog();
+  function copyText(text, cb) {
+    function fallback() {
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.top = "0"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta); cb(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { cb(true); }, fallback);
+    else fallback();
+  }
+
+  function withValidOrder(fn) {
+    var o = currentOrder(), problem = checkOrder(o);
+    if (problem) {
+      setWarn(problem[0], problem[1] === "f-rank" ? rankFor(o.type.cost) : null);
+      var f = $(problem[1]); if (f) f.focus();
+      return;
+    }
+    fn(orderText(o));
+  }
+
+  function copyOrder() {
+    withValidOrder(function (text) {
+      copyText(text, function (ok) {
+        $("copied").textContent = ok ? "Скопировано. Отправь организатору" : "Выдели текст приказа и скопируй вручную";
+        if (ok) slam();
+      });
+    });
+  }
+
+  function sendOrder() {
+    withValidOrder(function (text) {
+      navigator.share({title: "Приказ по гарнизону Каземата", text: text}).then(function () {
+        $("copied").textContent = "Приказ отправлен"; slam();
+      }, function () {});
+    });
+  }
+
+  function sharePage() {
+    var url = location.href.split("#")[0];
+    if (navigator.share) { navigator.share({title: document.title, text: SHARE_TEXT, url: url}).catch(function () {}); return; }
+    copyText(url, function (ok) { $("share-status").textContent = ok ? "Ссылка скопирована" : "Скопируй адрес страницы вручную"; });
+  }
+
+  function setupBar() {
+    var bar = $("bar"), actions = $("hero-actions");
+    if (!("IntersectionObserver" in window)) { bar.classList.add("show"); return; }
+    new IntersectionObserver(function (en) {
+      var e = en[0];
+      bar.classList.toggle("show", !e.isIntersecting && e.boundingClientRect.top < 0);
+    }).observe(actions);
+    var form = $("order-form");
+    form.addEventListener("focusin", function () { document.body.classList.add("typing"); });
+    form.addEventListener("focusout", function () { setTimeout(function () { if (!form.contains(document.activeElement)) document.body.classList.remove("typing"); }, 50); });
+  }
+
+  function renderAll() { renderSeats(); renderRanks(); renderCatalog(); renderBoard(); renderGarrison(); renderTelegram(); renderGame(); updateOrder(); }
+
   renderAll();
   ["f-callsign", "f-rank", "f-type", "f-place", "f-text", "f-parent"].forEach(function (id) {
     $(id).addEventListener("input", updateOrder); $(id).addEventListener("change", updateOrder);
   });
   $("copy").addEventListener("click", copyOrder);
+  if (navigator.share) { $("send").hidden = false; $("send").addEventListener("click", sendOrder); }
+  $("share").addEventListener("click", sharePage);
+  setupBar();
 
   fetch("board.json?t=" + Date.now(), {cache: "no-store"})
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (d) { if (d && d.ranks) { data = d; renderAll(); } })
+    .then(function (d) {
+      if (!d || !d.ranks) return;
+      if (!d.catalog) d.catalog = data.catalog;
+      if (!d.telegram) d.telegram = data.telegram;
+      data = d; renderAll();
+    })
+    .catch(function () {});
+  fetch("news.json?t=" + Date.now(), {cache: "no-store"})
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (n) { if (n && Array.isArray(n.posts)) { news = n; renderTelegram(); } })
     .catch(function () {});
 })();
 </script>

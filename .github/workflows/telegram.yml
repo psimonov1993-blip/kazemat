@@ -1,0 +1,82 @@
+name: Штаб в Telegram
+
+# Посты в канал: изменения доски (board.json) и новые версии игры (релизы)
+# Коммит news.json делается через GITHUB_TOKEN: такой push не запускает workflow повторно,
+# а фильтр paths ниже смотрит только на board.json, так что цикла нет дважды
+on:
+  push:
+    branches: [main]
+    paths: [board.json]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run - показать готовые посты без отправки; selftest - тихое тестовое сообщение и его удаление; hello - приветственный пост"
+        type: choice
+        options: [dry-run, selftest, hello]
+        default: dry-run
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: telegram-posting
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      GITHUB_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ github.token }}
+      SITE_URL: https://psimonov1993-blip.github.io/kazemat/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Собрать и отправить посты
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          case "$GITHUB_EVENT_NAME" in
+            push)
+              python3 .github/scripts/tg_post.py board --before "$BEFORE" --after "$AFTER" ;;
+            release)
+              python3 .github/scripts/tg_post.py release --event "$GITHUB_EVENT_PATH" ;;
+            workflow_dispatch)
+              case "$MODE" in
+                selftest) python3 .github/scripts/tg_post.py selftest ;;
+                hello) python3 .github/scripts/tg_post.py hello ;;
+                *) python3 .github/scripts/tg_post.py latest --dry-run ;;
+              esac ;;
+          esac
+
+      - name: Записать id постов в news.json
+        if: always()
+        run: |
+          if git diff --quiet -- news.json; then
+            echo "news.json не менялся"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          git commit -m "Лента канала: новые посты в news.json"
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" >/dev/null 2>&1 && echo "Сборка Pages запрошена" || echo "Pages соберётся по push"
+              exit 0
+            fi
+            sleep $((i * 5))
+          done
+          echo "news.json не удалось отправить"
+          exit 1
