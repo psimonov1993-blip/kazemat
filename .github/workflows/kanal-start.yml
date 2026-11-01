@@ -1,0 +1,60 @@
+name: Стартовые посты канала
+
+# 5 стартовых постов с картинками и опросами (.github/scripts/kanal_start.json), запуск только вручную
+# check - проверка бота, канала, прав, картинок и длины текстов без публикации
+# publish - публикация; что уже ушло, записано в kanal-start.json, повтор не задвоит
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "check - проверить без публикации; publish - опубликовать 5 постов"
+        type: choice
+        options: [check, publish]
+        default: check
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: telegram-posting
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Стартовые посты
+        env:
+          MODE: ${{ inputs.mode }}
+        run: python3 .github/scripts/tg_kanal_start.py "$MODE"
+
+      - name: Записать номера постов
+        if: always() && inputs.mode == 'publish'
+        run: |
+          git add -A -- kanal-start.json news.json
+          if git diff --cached --quiet; then
+            echo "Записывать нечего"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Стартовые посты канала: номера сообщений"
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" >/dev/null 2>&1 && echo "Сборка Pages запрошена" || echo "Pages соберётся по push"
+              exit 0
+            fi
+            sleep $((i * 5))
+          done
+          echo "Номера постов не удалось отправить"
+          exit 1
