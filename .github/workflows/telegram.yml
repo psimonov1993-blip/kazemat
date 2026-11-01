@@ -12,9 +12,9 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "dry-run - показать готовые посты без отправки; selftest - тихое тестовое сообщение и его удаление; hello - приветственный пост"
+        description: "dry-run - показать готовые посты без отправки; selftest - тихое тестовое сообщение в канал и его удаление; admintest - проверочная копия только в личку организатору; hello - приветственный пост"
         type: choice
-        options: [dry-run, selftest, hello]
+        options: [dry-run, selftest, admintest, hello]
         default: dry-run
 
 permissions:
@@ -57,6 +57,7 @@ jobs:
             workflow_dispatch)
               case "$MODE" in
                 selftest) python3 .github/scripts/tg_post.py selftest ;;
+                admintest) python3 .github/scripts/tg_post.py admintest ;;
                 hello) python3 .github/scripts/tg_post.py hello ;;
                 *) python3 .github/scripts/tg_post.py latest --dry-run ;;
               esac ;;

@@ -10,6 +10,7 @@
   latest                              последний diff board.json и последний релиз, только печать
   hello                               приветственный пост канала (запускает автор вручную)
   selftest                            тихое тестовое сообщение и его немедленное удаление
+  admintest                           проверочная копия последнего изменения доски только в личку организатору
 
 Флаги: --dry-run печатает готовые посты и ничего не отправляет; --root корень сайта (по умолчанию два уровня выше скрипта)
 Секреты берутся из окружения: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID. Если их нет, публикация пропускается, код выхода 0
@@ -561,7 +562,7 @@ def main():
         except Exception:
             pass
     ap = argparse.ArgumentParser(description="Автопостинг Каземата в Telegram")
-    ap.add_argument("mode", choices=["board", "release", "latest", "hello", "selftest"])
+    ap.add_argument("mode", choices=["board", "release", "latest", "hello", "selftest", "admintest"])
     ap.add_argument("--before")
     ap.add_argument("--after")
     ap.add_argument("--old")
@@ -622,6 +623,30 @@ def main():
 
     if a.mode == "hello":
         return publish([hello_message()], root, a.dry_run)
+
+    if a.mode == "admintest":
+        token, admin_chat = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip(), os.environ.get("TELEGRAM_ADMIN_CHAT_ID", "").strip()
+        out = subprocess.run(["git", "log", "-n", "1", "--format=%H", "--", "board.json"], cwd=root, capture_output=True, text=True)
+        sha = out.stdout.strip()
+        report = None
+        if sha:
+            new, old = git_board(root, sha), git_board(root, sha + "^")
+            if new is not None and old is not None:
+                report = admin_report(old, new, commit_title(root, sha))
+        if report is None:
+            report = Msg("Копия организатору", "Изменений доски пока не было")
+        report.text = "<b>Проверка: так выглядит копия изменений</b>\nВ канал это не публикуется\n\n" + report.text
+        if a.dry_run or not token or not admin_chat:
+            show([report], "Проверка копии: %s" % ("dry-run" if a.dry_run else "секрет TELEGRAM_ADMIN_CHAT_ID или токен не задан, не отправлено"))
+            return 0
+        try:
+            res = Telegram(token, admin_chat).deliver(report)
+        except TgError as err:
+            log("Копия организатору не ушла: %s" % err)
+            return 1
+        log("Проверочная копия отправлена организатору в личку, message_id %s" % res.get("message_id"))
+        summary(["Проверочная копия отправлена в личку, message_id %s" % res.get("message_id")])
+        return 0
 
     if a.mode == "selftest":
         token, chat = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip(), os.environ.get("TELEGRAM_CHAT_ID", "").strip()
