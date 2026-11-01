@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Канал Каземата</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Serif:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Комплект для запуска канала: аватарка, название, описание, 5 стартовых постов. Палитра сайта мастерской */
+:root {
+  --ground: #0f0c0a;
+  --ground-2: #17120e;
+  --rule: #2f261d;
+  --text: #e2d7bd;
+  --text-dim: #a3977e;
+  --paper: #e5d9ba;
+  --ink: #2a2118;
+  --ink-dim: #6a5b46;
+  --ember: #d48b3a;
+  --stamp: #a3261b;
+  --gas: #a6dc5a;
+  --display: "Old Standard TT", "PT Serif", Georgia, serif;
+  --body: "PT Serif", Georgia, serif;
+  --mono: "PT Mono", "Courier New", monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+img { max-width: 100%; display: block; }
+a { color: var(--ember); }
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left, 0px)) 64px; }
+header { padding: 40px 0 18px; border-bottom: 1px solid var(--rule); }
+.kicker { font-family: var(--mono); font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ember); margin: 0 0 10px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(34px, 6vw, 52px); }
+h2 { font-size: clamp(26px, 4vw, 34px); margin-bottom: 8px; }
+.lead { color: var(--text-dim); max-width: 60ch; margin: 12px 0 18px; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.toc a { font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; text-decoration: none; border: 1px solid var(--rule); padding: 6px 10px; color: var(--text-dim); }
+nav.toc a:hover { color: var(--text); border-color: var(--ember); }
+section { padding: 44px 0 0; }
+.note { color: var(--text-dim); font-size: 15.5px; margin: 0 0 16px; max-width: 64ch; }
+
+/* аватарка */
+.ava-main { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: center; }
+.circle { border-radius: 50%; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--rule), 0 18px 60px rgba(0,0,0,.6); }
+.circle img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.chatlist { background: #17212b; border-radius: 12px; padding: 6px 0; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+.chat { display: grid; grid-template-columns: 54px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 14px; }
+.chat .av { width: 54px; height: 54px; border-radius: 50%; overflow: hidden; background: #2b5278; display: grid; place-items: center; color: #fff; font-weight: 600; font-size: 20px; }
+.chat .av img { width: 100%; height: 100%; object-fit: cover; }
+.chat b { display: block; color: #fff; font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat span { display: block; color: #7f91a4; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat time { color: #7f91a4; font-size: 13px; align-self: start; padding-top: 4px; }
+.chat.me { background: #2b5278; }
+.chat.me span, .chat.me time { color: #c2d6ea; }
+.dim .av { filter: grayscale(.4) brightness(.7); }
+.sizes { display: flex; gap: 18px; align-items: end; margin-top: 18px; flex-wrap: wrap; }
+.sizes figure { margin: 0; text-align: center; font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); }
+.sizes .circle { margin: 0 auto 6px; }
+.alts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 20px; margin-top: 28px; }
+.alt { border: 1px solid var(--rule); padding: 16px; background: var(--ground-2); }
+.alt .circle { width: 150px; margin: 0 auto 12px; }
+.alt h3 { font-size: 20px; margin: 0 0 4px; }
+.alt p { color: var(--text-dim); font-size: 14.5px; margin: 0 0 12px; }
+
+.btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13.5px; letter-spacing: .08em; text-transform: uppercase; padding: 12px 18px; border: 1px solid var(--ember); color: var(--text); background: transparent; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
+.btn:hover, .btn:focus-visible { background: var(--ember); color: var(--ground); outline: none; }
+.btn.solid { background: var(--ember); color: var(--ground); }
+.btn.small { padding: 9px 13px; font-size: 12px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* бумага с текстом */
+.paper { background: var(--paper); color: var(--ink); padding: 20px 20px 16px; box-shadow: 0 10px 40px rgba(0,0,0,.45); }
+.paper pre { font-family: var(--body); font-size: 16.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; margin: 0 0 14px; }
+.paper .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); letter-spacing: .06em; text-transform: uppercase; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.paper .ok { color: #3d6b1c; }
+.paper .over { color: var(--stamp); font-weight: 700; }
+.paper .btn { color: var(--ink); border-color: var(--ink); }
+.paper .btn:hover, .paper .btn:focus-visible { background: var(--ink); color: var(--paper); }
+.paper + .paper { margin-top: 18px; }
+.copied { background: var(--stamp) !important; border-color: var(--stamp) !important; color: var(--paper) !important; }
+
+/* посты */
+.post { border-top: 1px solid var(--rule); padding-top: 30px; margin-top: 34px; }
+.post:first-of-type { border-top: 0; margin-top: 10px; }
+.post-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: baseline; margin-bottom: 6px; }
+.post-head .n { font-family: var(--display); font-size: 54px; line-height: .9; color: var(--ember); }
+.post-head h3 { font-size: clamp(22px, 3.4vw, 28px); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+.tag { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--rule); color: var(--text-dim); }
+.tag.pin { border-color: var(--ember); color: var(--ember); }
+.tag.int { border-color: var(--gas); color: var(--gas); }
+.shots { display: grid; gap: 10px; margin-bottom: 18px; }
+.shots.one { grid-template-columns: minmax(0, 360px); }
+.shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.shots.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.shots figure { margin: 0; position: relative; }
+.shots figure img { width: 100%; border: 1px solid var(--rule); }
+.shots figcaption { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); margin-top: 6px; }
+.shots figcaption a { text-decoration: none; border: 1px solid var(--rule); padding: 3px 8px; color: var(--text); white-space: nowrap; }
+.shots figcaption a:hover { border-color: var(--ember); }
+.spoiler-mark { position: absolute; top: 8px; right: 8px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; background: rgba(15,12,10,.85); color: var(--gas); padding: 4px 8px; border: 1px solid var(--gas); }
+
+.poll { margin-top: 16px; border: 1px solid var(--gas); background: rgba(166,220,90,.05); padding: 16px 18px; }
+.poll .meta { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--gas); margin: 0 0 8px; }
+.poll .q { font-weight: 700; font-size: 18px; margin: 0 0 12px; }
+.poll ul { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 8px; }
+.poll li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 1px solid var(--rule); padding: 8px 10px; background: var(--ground-2); }
+.poll li.right { border-color: var(--gas); }
+.poll li.right::after { content: "верный"; grid-column: 1; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--gas); margin-top: -4px; }
+.poll .expl { font-size: 15px; color: var(--text-dim); margin: 6px 0 10px; }
+.poll .hint { font-size: 14px; color: var(--text-dim); margin: 0; }
+.chip { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--ember); color: var(--text); background: transparent; padding: 6px 10px; cursor: pointer; }
+.chip:hover, .chip:focus-visible { background: var(--ember); color: var(--ground); outline: none; }
+
+ol.steps { padding-left: 22px; margin: 0; }
+ol.steps li { margin-bottom: 10px; }
+ol.steps li::marker { color: var(--ember); font-family: var(--mono); }
+.warn { border-left: 3px solid var(--stamp); padding: 6px 0 6px 14px; color: var(--text); font-size: 15.5px; margin-top: 22px; background: rgba(163,38,27,.08); }
+
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+
+@media (max-width: 640px) {
+  .ava-main { grid-template-columns: minmax(0, 1fr); }
+  .ava-main > .circle { max-width: 260px; margin: 0 auto; }
+  .shots.two, .shots.four { grid-template-columns: minmax(0, 1fr); }
+  .shots.one { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">Мастерская Каземата · канал</p>
+    <h1>Комплект для запуска канала</h1>
+    <p class="lead">Аватарка, название, описание и пять стартовых постов с картинками и опросами. Тексты копируются одной кнопкой, картинки скачиваются в полном размере</p>
+    <nav class="toc">
+      <a href="#avatar">Аватарка</a><a href="#name">Название</a><a href="#desc">Описание</a><a href="#posts">5 постов</a><a href="#how">Как публиковать</a>
+    </nav>
+    <div class="row" style="margin-top:16px"><a class="btn" href="kanal-komplekt.zip" download>Скачать все картинки архивом</a></div>
+  </header>
+
+  <section id="avatar">
+    <p class="kicker">Шаг 1</p>
+    <h2>Аватарка</h2>
+    <p class="note">Telegram обрезает фото в круг, поэтому всё главное собрано в центре. Два зелёных стекла противогаза читаются даже в самом мелком кружке списка чатов</p>
+    <div class="ava-main">
+      <div class="circle"><img src="img/kanal/avatar-main-512.jpg" alt="Аватарка канала: отравленный в противогазе со светящимися зелёными стёклами"></div>
+      <div>
+        <div class="chatlist" aria-label="Как аватарка выглядит в списке чатов">
+          <div class="chat dim"><div class="av">М</div><div><b>Мама</b><span>Ты поел?</span></div><time>19:02</time></div>
+          <div class="chat me"><div class="av"><img src="img/kanal/avatar-main-512.jpg" alt=""></div><div><b>КАЗЕМАТ</b><span>ПРИКАЗЪ № 1 по гарнизону Каземата</span></div><time>19:40</time></div>
+          <div class="chat dim"><div class="av" style="background:#6b4b9a">Ш</div><div><b>Школа 7Б</b><span>Завтра контрольная</span></div><time>18:15</time></div>
+        </div>
+        <div class="sizes" aria-label="Мелкие размеры">
+          <figure><div class="circle" style="width:96px"><img src="img/kanal/avatar-main-512.jpg" alt=""></div>96 px</figure>
+          <figure><div class="circle" style="width:48px"><img src="img/kanal/avatar-main-512.jpg" alt=""></div>48 px</figure>
+          <figure><div class="circle" style="width:28px"><img src="img/kanal/avatar-main-512.jpg" alt=""></div>28 px</figure>
+        </div>
+        <div class="row" style="margin-top:20px">
+          <a class="btn solid" href="img/kanal/avatar-main.jpg" download="kazemat-avatar.jpg">Скачать аватарку</a>
+        </div>
+      </div>
+    </div>
+    <div class="alts">
+      <div class="alt">
+        <div class="circle"><img src="img/kanal/avatar-znachok-512.jpg" alt="Значок гарнизона: противогаз, наган и лампа в дубовом венке"></div>
+        <h3>Запасной: значок гарнизона</h3>
+        <p>Круглый, как сама рамка Telegram. Подходит, если канал больше про мастерскую и звания, чем про страх</p>
+        <a class="btn small" href="img/kanal/avatar-znachok.jpg" download="kazemat-znachok.jpg">Скачать</a>
+      </div>
+      <div class="alt">
+        <div class="circle"><img src="img/kanal/avatar-arka-512.jpg" alt="Отравленный в арке каземата, на полу горит лампа"></div>
+        <h3>Арка: ушла в постер</h3>
+        <p>Самая атмосферная, но в мелком кружке фигура теряется. Поэтому она стала постером первого поста</p>
+        <a class="btn small" href="img/kanal/avatar-arka.jpg" download="kazemat-arka.jpg">Скачать</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="name">
+    <p class="kicker">Шаг 2</p>
+    <h2>Название</h2>
+    <div class="paper">
+      <p class="meta"><span>Название канала</span><span class="count" data-limit="128"></span></p>
+      <pre id="t-name">КАЗЕМАТ · хоррор, который делаем вместе</pre>
+      <button class="btn small" data-copy="t-name">Скопировать</button>
+    </div>
+  </section>
+
+  <section id="desc">
+    <p class="kicker">Шаг 3</p>
+    <h2>Описание</h2>
+    <p class="note">В описании канала Telegram пускает не больше 255 знаков. Оба варианта влезают, ссылка в них нажимается</p>
+    <div class="paper">
+      <p class="meta"><span>Вариант 1 · основной</span><span class="count" data-limit="255"></span></p>
+      <pre id="t-desc1">Хоррор про русский форт 1915 года: газ, лампа, наган на 7 патронов и твари в противогазах
+Игру строим вместе: отдай приказ, и он войдёт в новую версию, а твой позывной в летопись
+Скачать и вступить в гарнизон 👇
+psimonov1993-blip.github.io/kazemat</pre>
+      <button class="btn small" data-copy="t-desc1">Скопировать</button>
+    </div>
+    <div class="paper">
+      <p class="meta"><span>Вариант 2 · с вызовом</span><span class="count" data-limit="255"></span></p>
+      <pre id="t-desc2">1915 год. Форт после газовой атаки. У тебя лампа и наган на 7 патронов, а в темноте ждут отравленные
+Это игра, которую делает гарнизон: твой приказ войдёт в новую версию
+Сыграть и вступить 👉 psimonov1993-blip.github.io/kazemat</pre>
+      <button class="btn small" data-copy="t-desc2">Скопировать</button>
+    </div>
+  </section>
+
+  <section id="posts">
+    <p class="kicker">Шаг 4</p>
+    <h2>Пять стартовых постов</h2>
+    <p class="note">Каждый пост - картинка с подписью, а сразу под ним отдельным сообщением опрос или викторина. Подписи короче 1024 знаков, поэтому влезают под фото. Порядок: от истории и страха к тому, как попасть в игру со своим приказом</p>
+
+    <!-- 1 -->
+    <article class="post" id="p1">
+      <div class="post-head"><div class="n">1</div><h3>Приказ № 1: что это за игра и зачем канал</h3></div>
+      <div class="tags"><span class="tag pin">первым · закрепить</span><span class="tag">1 картинка</span><span class="tag int">опрос</span></div>
+      <div class="shots one">
+        <figure><img src="img/kanal/post1-poster.jpg" alt="Постер: отравленный в арке каземата, надпись КАЗЕМАТ" loading="lazy"><figcaption><span>постер 1080x1350</span><a href="img/kanal/post1-poster.jpg" download>скачать</a></figcaption></figure>
+      </div>
+      <div class="paper">
+        <p class="meta"><span>Подпись к картинке</span><span class="count" data-limit="1024"></span></p>
+        <pre id="t-p1">ПРИКАЗЪ № 1 по гарнизону Каземата
+
+Октябрь 1915 года, русский крепостной форт после немецкой газовой атаки. Солдат, надышавшихся хлора, теперь зовут отравленными: сгорбленные фигуры в противогазах, стёкла масок светятся зелёным
+
+У тебя наган на 7 патронов и керосиновая лампа. Задача: найти ключ коменданта, отпереть потерну и выйти к свету
+
+КАЗЕМАТ - хоррор для телефона, и делаем мы его вместе. Каждый сезон набираем гарнизон из 12 человек: их приказы входят в новую версию игры, а позывные остаются в летописи
+
+Что будет в канале:
+• новые версии игры
+• кадры и звуки из разработки
+• доска приказов и летопись гарнизона
+
+Игра и мастерская: psimonov1993-blip.github.io/kazemat
+Ответь в опросе ниже 👇</pre>
+        <button class="btn small" data-copy="t-p1">Скопировать</button>
+      </div>
+      <div class="poll">
+        <p class="meta">Опрос · анонимный · один ответ</p>
+        <p class="q" data-copyable>Как ты играешь в хорроры?</p>
+        <ul>
+          <li><span>Ночью, в наушниках и без света</span></li>
+          <li><span>Днём, а звук потише</span></li>
+          <li><span>Только когда рядом друзья</span></li>
+          <li><span>Ещё не играл, начну с Каземата</span></li>
+        </ul>
+        <p class="hint">Зачем: лёгкий первый ответ без усилия. Заодно узнаешь, кто твоя аудитория</p>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="post" id="p2">
+      <div class="post-head"><div class="n">2</div><h3>Кадры из игры и правила выживания</h3></div>
+      <div class="tags"><span class="tag">альбом из 4 кадров</span><span class="tag int">викторина</span></div>
+      <div class="shots four">
+        <figure><img src="img/kanal/post2-1-lazaret.jpg" alt="Кадр из игры: лазарет" loading="lazy"><figcaption><span>1 · лазарет</span><a href="img/kanal/post2-1-lazaret.jpg" download>скачать</a></figcaption></figure>
+        <figure><img src="img/kanal/post2-2-gaz.jpg" alt="Кадр из игры: галерея с газом" loading="lazy"><figcaption><span>2 · галерея с газом</span><a href="img/kanal/post2-2-gaz.jpg" download>скачать</a></figcaption></figure>
+        <figure><img src="img/kanal/post2-3-kazarma.jpg" alt="Кадр из игры: отравленный в казарме" loading="lazy"><figcaption><span>3 · казарма</span><a href="img/kanal/post2-3-kazarma.jpg" download>скачать</a></figcaption></figure>
+        <figure><img src="img/kanal/post2-4-kabinet.jpg" alt="Кадр из игры: кабинет коменданта" loading="lazy"><figcaption><span>4 · кабинет коменданта</span><a href="img/kanal/post2-4-kabinet.jpg" download>скачать</a></figcaption></figure>
+      </div>
+      <div class="paper">
+        <p class="meta"><span>Подпись к альбому</span><span class="count" data-limit="1024"></span></p>
+        <pre id="t-p2">Кадры из игры: четыре места, где тебя ждут
+
+1. Лазарет. Отсюда начинается путь: нары, бинты и одна лампа
+2. Галерея с газом. Зелёная муть ранит каждую секунду, пока ты в ней
+3. Казарма. Отравленный стоит тихо и ждёт, когда ты себя выдашь
+4. Кабинет коменданта. Здесь лежит ключ от потерны, и его сторожат
+
+Три правила, чтобы дожить до выхода:
+🕯️ Лампа светит тебе, но и выдаёт тебя. С огнём отравленный видит тебя за 15 метров, без огня только за 6,5
+💥 В нагане 7 патронов, а выстрел слышно за 24 метра. Выстрелил - жди гостей
+🏃 Бегом быстрее, но топот слышно за 8 метров. Шаг отравленные не слышат
+
+Проверь себя в викторине 👇</pre>
+        <button class="btn small" data-copy="t-p2">Скопировать</button>
+      </div>
+      <div class="poll">
+        <p class="meta">Викторина · один верный ответ</p>
+        <p class="q" data-copyable>Отравленный в 10 метрах и тебя ещё не заметил. Патронов ноль. Что делаешь?</p>
+        <ul>
+          <li><span>Бегу мимо, пока он не повернулся</span></li>
+          <li class="right"><span>Гашу лампу и обхожу шагом</span></li>
+          <li><span>Стою с лампой и жду, пока уйдёт</span></li>
+          <li><span>Ору, чтобы напугать его</span></li>
+        </ul>
+        <p class="expl" data-copyable>Без лампы он видит только на 6,5 метра, а шаг не слышит. Бег слышно за 8 метров, огонь видно за 15</p>
+        <p class="hint">Последняя строка - пояснение к викторине: Telegram покажет его после ответа</p>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="post" id="p3">
+      <div class="post-head"><div class="n">3</div><h3>Что за последней дверью</h3></div>
+      <div class="tags"><span class="tag">2 кадра · второй под спойлером</span><span class="tag int">викторина</span></div>
+      <div class="shots two">
+        <figure><img src="img/kanal/post3-1-dver.jpg" alt="Кадр из игры: дверь потерны № 2" loading="lazy"><figcaption><span>1 · дверь</span><a href="img/kanal/post3-1-dver.jpg" download>скачать</a></figcaption></figure>
+        <figure><img src="img/kanal/post3-2-otvet.jpg" alt="Кадр из игры: последний отравленный в свете у выхода" loading="lazy"><span class="spoiler-mark">под спойлер</span><figcaption><span>2 · ответ</span><a href="img/kanal/post3-2-otvet.jpg" download>скачать</a></figcaption></figure>
+      </div>
+      <div class="paper">
+        <p class="meta"><span>Подпись к альбому</span><span class="count" data-limit="1024"></span></p>
+        <pre id="t-p3">Потерна № 2. Последняя дверь между тобой и выходом
+
+Открыть её можно только ключом коменданта. Но стоит взять ключ, как форт просыпается: рядом ложится снаряд, в галерее кто-то воет, и двое отравленных уже идут по твоему следу
+
+Добежал, отпер. Что ждёт за дверью?
+
+Сначала ответь в викторине, потом открой второй кадр, ответ под спойлером 👇</pre>
+        <button class="btn small" data-copy="t-p3">Скопировать</button>
+      </div>
+      <div class="poll">
+        <p class="meta">Викторина · один верный ответ</p>
+        <p class="q" data-copyable>Ты отпер потерну. Что за дверью?</p>
+        <ul>
+          <li><span>Свет и свобода</span></li>
+          <li><span>Газ</span></li>
+          <li><span>Последний отравленный</span></li>
+          <li class="right"><span>Всё сразу</span></li>
+        </ul>
+        <p class="expl" data-copyable>В потерне стелется газ, а у самого выхода, прямо в полосе света, стоит последний отравленный</p>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="post" id="p4">
+      <div class="post-head"><div class="n">4</div><h3>Что ты получаешь: звания и приказы</h3></div>
+      <div class="tags"><span class="tag">альбом из 2 карточек</span><span class="tag int">опрос</span></div>
+      <div class="shots two">
+        <figure><img src="img/kanal/post4-1-zvaniya.jpg" alt="Карточка: звания гарнизона и цены" loading="lazy"><figcaption><span>1 · звания</span><a href="img/kanal/post4-1-zvaniya.jpg" download>скачать</a></figcaption></figure>
+        <figure><img src="img/kanal/post4-2-shagi.jpg" alt="Карточка: как приказ попадает в игру" loading="lazy"><figcaption><span>2 · пять шагов</span><a href="img/kanal/post4-2-shagi.jpg" download>скачать</a></figcaption></figure>
+      </div>
+      <div class="paper">
+        <p class="meta"><span>Подпись к альбому</span><span class="count" data-limit="1024"></span></p>
+        <pre id="t-p4">Игру делаем вместе. Вот что ты получаешь
+
+Звание решает, сколько приказов ты отдашь за сезон. Приказ - это изменение в игре: твоя записка на стене, новый звук, предмет, комната или целый монстр
+
+⭐ Рядовой, 150 ₽: 1 приказ и позывной в летописи игры
+⭐⭐ Унтер-офицер, 300 ₽: 2 приказа, позывной в летописи и в титрах
+⭐⭐⭐ Офицер, 450 ₽: 3 приказа, позывной в титрах и краской на стене каземата, голос при выборе темы следующего сезона
+
+Честные правила:
+• больше трёх приказов на человека нет даже за доплату, у всех равные шансы
+• мест в сезоне 12, каждое изменение собирается вручную
+• взнос платит родитель или ты с его разрешения
+• приказ нельзя выполнить - перепишешь его или вернём его часть взноса
+• в игре только позывные, настоящие имена не публикуем
+
+Приказ собирается в конструкторе на сайте, ответ обычно за 1-3 дня:
+psimonov1993-blip.github.io/kazemat</pre>
+        <button class="btn small" data-copy="t-p4">Скопировать</button>
+      </div>
+      <div class="poll">
+        <p class="meta">Опрос · анонимный · один ответ</p>
+        <p class="q" data-copyable>Кем зайдёшь в гарнизон?</p>
+        <ul>
+          <li><span>⭐ Рядовой: 1 приказ</span></li>
+          <li><span>⭐⭐ Унтер-офицер: 2 приказа</span></li>
+          <li><span>⭐⭐⭐ Офицер: 3 приказа и стена каземата</span></li>
+          <li><span>Пока посмотрю со стороны</span></li>
+        </ul>
+        <p class="hint">Последний вариант оставлен специально: тем, кто не готов платить, тоже есть что нажать, и опрос не давит</p>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="post" id="p5">
+      <div class="post-head"><div class="n">5</div><h3>Что можно изменить в игре</h3></div>
+      <div class="tags"><span class="tag">1 картинка</span><span class="tag int">опрос · несколько ответов</span><span class="tag int">комментарии</span></div>
+      <div class="shots one">
+        <figure><img src="img/kanal/post5-katalog.jpg" alt="Карточка: каталог изменений" loading="lazy"><figcaption><span>каталог 1080x1350</span><a href="img/kanal/post5-katalog.jpg" download>скачать</a></figcaption></figure>
+      </div>
+      <div class="paper">
+        <p class="meta"><span>Подпись к картинке</span><span class="count" data-limit="1024"></span></p>
+        <pre id="t-p5">Что можно изменить в Каземате
+
+Небольшое, 1 приказ:
+✍️ надпись или записка: твой текст на стене, записка солдата, плакат
+📦 предмет в комнату: ящик, бочка, оружейная стойка, полевой телефон
+⚙️ правило игры: больше патронов, быстрее монстры, ярче лампа
+🎵 звук или музыка в нужном месте
+🥚 пасхалка, которую найдёт только внимательный
+
+Крупное, 2 приказа:
+🚪 новая комната или проход по твоему замыслу
+👁 новый монстр: другой вид отравленного
+💣 оружие или снаряжение: винтовка, граната, противогаз от газа
+🔧 новая механика: запирать двери, прятаться в шкафу
+
+Не берём мат и оскорбления, чужих героев из других игр и фильмов и поломку игры для всех вроде «убрать всех монстров»
+
+Голосуй, что добавить первым, а свою идею пиши в комментарии 👇</pre>
+        <button class="btn small" data-copy="t-p5">Скопировать</button>
+      </div>
+      <div class="poll">
+        <p class="meta">Опрос · анонимный · можно несколько ответов</p>
+        <p class="q" data-copyable>Что добавить в каземат первым?</p>
+        <ul>
+          <li><span>Новый монстр</span></li>
+          <li><span>Новая комната</span></li>
+          <li><span>Винтовка или граната</span></li>
+          <li><span>Прятаться в шкафу</span></li>
+          <li><span>Противогаз от газа</span></li>
+          <li><span>Пасхалка</span></li>
+        </ul>
+        <p class="hint">Итог опроса - готовая тема для следующего поста: «вы выбрали, вот что будет первым»</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="how">
+    <p class="kicker">Шаг 5</p>
+    <h2>Как публиковать в Telegram</h2>
+    <ol class="steps">
+      <li><b>Аватарка, название, описание:</b> открой канал, нажми на его название вверху, потом ✎. «Выбрать фотографию» - скачанная аватарка уже совпадает с кругом, двигать не нужно</li>
+      <li><b>Пост с картинкой:</b> скрепка, выбери картинку (для альбома - несколько по порядку номеров), вставь подпись в поле «Добавить подпись», отправь</li>
+      <li><b>Опрос сразу следом:</b> скрепка → «Опрос». Вставь вопрос, варианты по одному. Для викторины включи «Режим викторины», отметь верный ответ и вставь пояснение. Для поста 5 включи «Несколько ответов»</li>
+      <li><b>Спойлер в посте 3:</b> перед отправкой нажми на второй кадр, три точки → «Скрыть под спойлер»</li>
+      <li><b>Закреп:</b> зажми пост 1 пальцем → «Закрепить»</li>
+      <li><b>Комментарии для поста 5:</b> настройки канала → «Обсуждение» → создать группу. Без неё под постами нет кнопки комментариев</li>
+      <li><b>Темп:</b> пост 1 в день запуска и сразу в закреп, дальше по одному посту в день. Так у подписчиков каждый день есть повод открыть канал</li>
+    </ol>
+    <div class="warn"><b>Перед публикацией:</b> кнопка «Скачать для Android» на сайте мастерской пока ведёт на пустую страницу (404), файла игры в GitHub ещё нет. Посты 1 и 4 зовут на сайт, поэтому сначала нужно выложить APK</div>
+  </section>
+
+  <footer>КАЗЕМАТ · Мастерская · <a href="./">на главную мастерской</a></footer>
+</div>
+<script>
+(function () {
+  function len(s) { return Array.from(s).length; }
+  document.querySelectorAll(".count").forEach(function (c) {
+    var pre = c.closest(".paper").querySelector("pre");
+    var n = len(pre.textContent), limit = +c.getAttribute("data-limit");
+    c.textContent = n + " из " + limit + " знаков";
+    c.className = "count " + (n <= limit ? "ok" : "over");
+  });
+  function copy(text, b) {
+    function done() { var old = b.textContent; b.textContent = "Скопировано"; b.classList.add("copied"); setTimeout(function () { b.textContent = old; b.classList.remove("copied"); }, 1400); }
+    function fallback() {
+      var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); }
+  }
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () { copy(document.getElementById(b.getAttribute("data-copy")).textContent, b); });
+  });
+  // вопрос, варианты и пояснение опроса копируются по одному
+  document.querySelectorAll(".poll").forEach(function (poll) {
+    var items = Array.prototype.slice.call(poll.querySelectorAll("[data-copyable], li"));
+    items.forEach(function (el) {
+      var text = (el.tagName === "LI" ? el.querySelector("span") : el).textContent;
+      var b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = "Копировать";
+      b.addEventListener("click", function () { copy(text, b); });
+      if (el.tagName === "LI") { el.appendChild(b); }
+      else { var wrap = document.createElement("div"); wrap.className = "row"; wrap.style.margin = "-4px 0 12px"; wrap.appendChild(b); el.after(wrap); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
