@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Скачать КАЗЕМАТ для Android</title>
+<meta name="description" content="Бесплатный хоррор для Android про русский форт 1915 года. Скачать и поставить за четыре шага">
+<meta name="theme-color" content="#0f0c0a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f0c0a'/%3E%3Cpath d='M6 28V14a10 10 0 0 1 20 0v14z' fill='none' stroke='%23d48b3a' stroke-width='3'/%3E%3Ccircle cx='16' cy='19' r='3' fill='%23d48b3a'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://psimonov1993-blip.github.io/kazemat/android.html">
+<meta property="og:title" content="КАЗЕМАТ для Android">
+<meta property="og:description" content="Хоррор про форт 1915 года. Газ, лампа и наган на 7 патронов">
+<meta property="og:image" content="https://psimonov1993-blip.github.io/kazemat/img/05_monstr.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Mono&display=swap">
+<style>
+/* Страница для ссылки из профиля Instagram: только игра и установка, без цен и званий Мастерской */
+:root {
+  --ground: #0f0c0a;
+  --ground-2: #17120e;
+  --rule: #2f261d;
+  --text: #e2d7bd;
+  --text-dim: #a3977e;
+  --ember: #d48b3a;
+  --stamp: #a3261b;
+  --display: "Old Standard TT", "PT Serif", Georgia, "Times New Roman", serif;
+  --body: "PT Serif", Georgia, "Times New Roman", serif;
+  --mono: "PT Mono", "Courier New", monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.6; overflow-wrap: break-word; }
+img { max-width: 100%; display: block; }
+a { color: var(--ember); }
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { padding-block: 48px 0; }
+h1, h2 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(28px, 6vw, 38px); margin-bottom: 18px; }
+.kicker { font-family: var(--mono); font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ember); margin: 0 0 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; font-family: var(--mono); font-size: 16px; line-height: 1.3; letter-spacing: 0.07em; text-transform: uppercase; padding: 12px 24px; border: 1px solid var(--ember); color: var(--text); background: transparent; text-decoration: none; text-align: center; }
+.btn.solid { background: var(--ember); color: var(--ground); }
+.btn.solid:hover, .btn.solid:focus-visible { background: var(--text); border-color: var(--text); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+:focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
+
+.hero { position: relative; border-bottom: 1px solid var(--rule); }
+.hero .art { position: relative; height: min(46vh, 440px); height: min(46svh, 440px); overflow: hidden; }
+.hero .art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; filter: brightness(1.3); }
+.hero .art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,12,10,0) 52%, var(--ground) 100%); }
+.hero .wrap { position: relative; margin-top: -56px; padding-block: 0 36px; display: grid; gap: 14px; }
+.hero h1 { font-size: clamp(56px, 16vw, 112px); letter-spacing: 0.04em; line-height: 0.95; }
+.hero h1, .hero .tagline, .hero .lead, .hero .kicker { text-shadow: 0 2px 14px rgba(0,0,0,0.85); }
+.hero .tagline { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(21px, 5vw, 28px); line-height: 1.2; color: #f2c48c; max-width: 24ch; }
+.hero .lead { margin: 0; max-width: 46ch; }
+.facts { font-family: var(--mono); font-size: 15px; color: var(--text-dim); display: grid; gap: 2px; }
+.facts b { color: var(--text); font-weight: 400; }
+
+.inapp { margin-top: 18px; border: 1px solid var(--rule); border-left: 3px solid var(--ember); background: var(--ground-2); padding: 14px 16px; display: grid; gap: 12px; justify-items: start; }
+.inapp p { margin: 0; }
+.inapp b { font-family: var(--mono); font-weight: 400; color: var(--ember); }
+
+.install { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+.install li::marker { font-family: var(--mono); color: var(--ember); }
+.help { margin-top: 22px; border: 1px solid var(--rule); border-left: 3px solid var(--stamp); background: var(--ground-2); }
+.help summary { min-height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; cursor: pointer; list-style: none; font-family: var(--display); font-weight: 700; font-size: 20px; }
+.help summary::-webkit-details-marker { display: none; }
+.help summary::after { content: "+"; font-family: var(--mono); font-weight: 400; font-size: 24px; color: var(--ember); }
+.help[open] summary::after { content: "-"; }
+.help ul { list-style: none; margin: 0; padding: 0 16px 14px; display: grid; gap: 10px; font-size: 16px; }
+.help li b { display: block; color: var(--text); }
+.note { font-family: var(--mono); font-size: 15px; color: var(--text-dim); margin: 18px 0 0; }
+
+.keys { width: 100%; border-collapse: collapse; font-size: 16px; }
+.keys td { padding: 10px 0; border-top: 1px dotted var(--rule); vertical-align: top; }
+.keys td:first-child { font-family: var(--mono); color: var(--ember); white-space: nowrap; width: 1%; padding-right: 16px; }
+
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.shots figure { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.shots img { border: 1px solid var(--rule); width: 100%; height: auto; }
+.shots figcaption { font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
+
+.again { margin-top: 28px; }
+footer { margin-top: 56px; padding-block: 22px calc(22px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 15px; color: var(--text-dim); }
+@media (max-width: 380px) { .shots { grid-template-columns: minmax(0, 1fr); } .keys td:first-child { white-space: normal; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="art"><img src="img/05_monstr.jpg" alt="Отравленный в противогазе в тёмном коридоре форта, впереди лампа и наган" width="1280" height="680" fetchpriority="high"></div>
+  <div class="wrap">
+    <p class="kicker">Хоррор для Android · бесплатно</p>
+    <h1>Каземат</h1>
+    <p class="tagline">Форт 1915 года. Газ, лампа и наган на 7 патронов</p>
+    <p class="lead">Найди ключ коменданта и выйди к свету. Погасишь лампу - тебя видно только вблизи</p>
+    <div><a class="btn solid" id="g-download" href="https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12 M7 10l5 5 5-5 M5 20h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>Скачать для Android</a></div>
+    <div class="facts">
+      <span>Версия <b id="g-version">1.0.1</b> · <b id="g-date">1 ноября 2026</b></span>
+      <span>Android 7 и новее<span id="g-size"> · 66 МБ</span></span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="inapp" id="inapp" hidden>
+    <p>Страница открыта внутри <span id="inapp-name">приложения</span>. Отсюда файл игры часто не скачивается до конца. Нажми <b>⋮</b> вверху справа и выбери «Открыть в Chrome» или «Открыть в браузере»</p>
+    <a class="btn" id="inapp-open" href="#" hidden>Открыть в Chrome</a>
+  </div>
+
+  <section id="ustanovka">
+    <p class="kicker">Установка</p>
+    <h2>Четыре шага</h2>
+    <ol class="install">
+      <li>Нажми «Скачать для Android» и дождись, пока файл скачается целиком: он весит 66-69 МБ, по мобильной сети это бывает 5-15 минут. Потом открой Kazemat-Android.apk</li>
+      <li>Телефон спросит, можно ли ставить приложения из браузера. Открой настройки и разреши</li>
+      <li>Нажми «Установить». Если Play Защита предупредит про неизвестного разработчика, выбери «Всё равно установить»</li>
+      <li>Найди на экране значок КАЗЕМАТ. Играть лучше в наушниках и с выключенным светом</li>
+    </ol>
+    <details class="help" id="pomosh">
+      <summary>Игра не ставится?</summary>
+      <ul>
+        <li><b>«Пакет недействителен (например, поврежден)»</b> Файл скачался не целиком. Удали Kazemat-Android.apk из «Загрузок» и скачай заново в Chrome, лучше по Wi-Fi, и не закрывай браузер до конца загрузки. Целый файл весит 66-69 МБ, если меньше, он недокачан</li>
+        <li><b>Ссылку открыл в Instagram, Telegram или ВКонтакте</b> Встроенный браузер приложения обрывает загрузку. Нажми ⋮ и выбери «Открыть в Chrome» или «Открыть в браузере»</li>
+        <li><b>«Приложение не установлено»</b> Удали старую версию КАЗЕМАТ, если она есть, и поставь заново</li>
+        <li><b>Телефон не даёт открыть файл</b> В настройках найди «Установка неизвестных приложений» и разреши её для браузера, которым скачивал</li>
+        <li><b>Samsung</b> Может мешать «Автоблокировщик»: Настройки - Безопасность - Автоблокировщик, выключи его на время установки</li>
+        <li><b>Мало места</b> Нужно свободно 300 МБ</li>
+        <li><b>Старый телефон</b> Игра работает на Android 7 и новее</li>
+      </ul>
+    </details>
+    <p class="note">На iPhone игру поставить нельзя: Apple разрешает устанавливать игры только из App Store</p>
+  </section>
+
+  <section id="upravlenie">
+    <p class="kicker">Управление</p>
+    <h2>Как играть</h2>
+    <table class="keys">
+      <tr><td>Левый палец</td><td>идти, джойстик до упора вперёд - бег</td></tr>
+      <tr><td>Правый палец</td><td>смотреть по сторонам</td></tr>
+      <tr><td>Огонь</td><td>выстрел, с кнопки можно вести прицел</td></tr>
+      <tr><td>Лампа</td><td>погасишь, и тебя видно только вблизи</td></tr>
+      <tr><td>Действие</td><td>открыть дверь</td></tr>
+    </table>
+  </section>
+
+  <section id="kadry">
+    <p class="kicker">Кадры из игры</p>
+    <h2>Что внутри</h2>
+    <div class="shots">
+      <figure><img src="img/01_lazaret.jpg" alt="Лазарет: кирпичные своды, лампа" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Лазарет</figcaption></figure>
+      <figure><img src="img/03_galereya_gaz.jpg" alt="Бетонная галерея и облако газа" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Галерея с газом</figcaption></figure>
+      <figure><img src="img/06_dver.jpg" alt="Железная дверь потерны" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Потерна № 2</figcaption></figure>
+      <figure><img src="img/07_vyhod.jpg" alt="Конец потерны: в проёме выхода дневной свет и силуэт отравленного" width="1280" height="680" loading="lazy" decoding="async"><figcaption>Выход</figcaption></figure>
+    </div>
+    <div class="again"><a class="btn solid" id="g-download-2" href="https://github.com/psimonov1993-blip/kazemat/releases/latest/download/Kazemat-Android.apk">Скачать для Android</a></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">КАЗЕМАТ · бесплатная игра для Android</div>
+</footer>
+
+<script>
+(function () {
+  var MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  function $(id) { return document.getElementById(id); }
+  function ruDate(iso) { var p = (iso || "").split("-"); if (p.length !== 3) return iso || ""; return (+p[2]) + " " + MONTHS[(+p[1]) - 1] + " " + p[0]; }
+
+  // Встроенный браузер Instagram, Telegram или ВК обрывает загрузку APK: подсказываем открыть Chrome
+  var ua = navigator.userAgent || "";
+  var apps = [["Instagram", /Instagram/i], ["Facebook", /FBAN|FBAV|FB_IAB/i], ["Telegram", /Telegram/i], ["ВКонтакте", /VKAndroidApp|vkclient/i]];
+  for (var i = 0; i < apps.length; i++) {
+    if (!apps[i][1].test(ua)) continue;
+    $("inapp-name").textContent = apps[i][0];
+    $("inapp").hidden = false;
+    if (/Android/i.test(ua)) {
+      var open = $("inapp-open");
+      open.href = "intent://" + location.host + location.pathname + "#Intent;scheme=https;package=com.android.chrome;end";
+      open.hidden = false;
+    }
+    break;
+  }
+
+  // Версия, дата и размер берутся из того же board.json, что и на главной странице сайта
+  fetch("board.json?t=" + Date.now(), {cache: "no-store"})
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      var g = (data && data.game) || {};
+      if (g.version) $("g-version").textContent = g.version;
+      if (g.date) $("g-date").textContent = ruDate(g.date);
+      if (g.size_mb) $("g-size").textContent = " · " + g.size_mb + " МБ";
+      if (g.download) { $("g-download").href = g.download; $("g-download-2").href = g.download; }
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
