@@ -247,7 +247,8 @@ def publish(tg, data, root):
             if not rec.get("message_ids"):
                 if not first:
                     time.sleep(PAUSE)
-                ids, res = send_post(tg, post, caption_for(post, has_comments), loud=(n == 1))
+                # со звуком уходит пост 1 и посты-новости с "loud": true, остальные стартовые тихо
+                ids, res = send_post(tg, post, caption_for(post, has_comments), loud=(n == 1 or bool(post.get("loud"))))
                 rec = {"title": post["title"], "message_ids": ids, "date": now().strftime("%Y-%m-%d %H:%M")}
                 state["posts"][post["id"]] = rec
                 save_state(state_path, state)
